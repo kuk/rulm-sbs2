@@ -1,9 +1,15 @@
 
+import re
 import uuid
 import random
 import json
+import asyncio
+
+from tqdm import tqdm
 
 import pandas as pd
+
+import openai
 
 
 #####
@@ -28,13 +34,27 @@ def read_jsonl(path):
 
 ######
 #
-#   UUID
+#   UID
 #
 #####
 
 
 def gen_uid():
     return str(uuid.uuid4())
+
+
+########
+#
+#   DOTENV
+#
+#######
+
+
+def read_dotenv(path):
+    with open(path) as file:
+        for line in file:
+            if '=' in line:
+                yield line.split('=', 1)
 
 
 #####
@@ -113,3 +133,54 @@ def parse_arena(records):
         }
 
 
+########
+#
+#   OPENAI
+#
+#####
+
+
+async def openai_singleturn(
+        prompt, model,
+        temperature=1,
+        max_tokens=None,
+        request_timeout=60
+):
+    completion = await openai.ChatCompletion.acreate(
+        model=model,
+        messages=[{
+            'role': 'user',
+            'content': prompt
+        }],
+        temperature=temperature,
+        max_tokens=max_tokens,
+        request_timeout=request_timeout
+    )
+    return completion.choices[0].message.content
+
+
+#######
+#
+#   TRANSLATE
+#
+######
+
+
+async def openai_translate(instruction):
+    prompt = f'''Ты профессиональный переводчик с английского на русский.
+Переведи задание для ассистента на русский. Обращайся к ассистенту на ты.
+
+Задание на английском (заключено в [[ ]]):
+[[{instruction}]]
+
+Задание на русском:'''
+    answer = await openai_singleturn(prompt, model='gpt-3.5-turbo-0613')
+    return re.sub(r'\[\[+|\]\]+', '', answer).strip()
+
+
+async def openai_translate_worker(items):
+    for item in items:
+        try:
+            item['answer'] = await openai_translate(item['instruction'])
+        except openai.error.OpenAIError as error:
+            print(error, file=sys.stderr)
