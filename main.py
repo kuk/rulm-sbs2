@@ -54,7 +54,7 @@ def read_dotenv(path):
     with open(path) as file:
         for line in file:
             if '=' in line:
-                yield line.split('=', 1)
+                yield line.rstrip('\n').split('=', 1)
 
 
 #####
