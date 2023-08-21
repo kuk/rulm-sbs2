@@ -10,6 +10,7 @@ from tqdm import tqdm
 import pandas as pd
 
 import openai
+import label_studio_sdk
 
 
 #####
@@ -184,3 +185,109 @@ async def openai_translate_worker(items):
             item['answer'] = await openai_translate(item['instruction'])
         except openai.error.OpenAIError as error:
             print(error, file=sys.stderr)
+
+
+##########
+#
+#  LABEL STUDIO
+#
+########
+
+
+# https://labelstud.io/api
+
+
+def label_studio_client():
+    return label_studio_sdk.Client('http://localhost:8080', label_studio_sdk.api_key)
+
+
+def translate_item_task_item(item):
+    return {
+        'data': {
+            'id': item['id'],
+            'instruction': item['instruction'],
+        },
+        'predictions': [{
+            'result': [{
+                'from_name': 'answer',
+                'to_name': 'instruction',
+                'type': 'textarea',
+                'value': {
+                    'text': [item['answer']]
+                }
+            }]
+        }]
+    }
+
+
+# {'id': 80,
+#  'annotations': [{'id': 589,
+#    'completed_by': 1,
+#    'result': [{'value': {'text': ['Напиши рецензию на... и общее впечатление аудитории.']},
+#      'id': 'ITsacnvW8G',
+#      'from_name': 'answer',
+#      'to_name': 'instruction',
+#      'type': 'textarea',
+#      'origin': 'prediction'}],
+#    'was_cancelled': False,
+#    'ground_truth': False,
+#    'created_at': '2023-08-19T16:51:03.224811Z',
+#    'updated_at': '2023-08-19T16:51:03.224849Z',
+#    'draft_created_at': None,
+#    'lead_time': 45.932,
+#    'prediction': {'id': 332,
+#     'model_version': 'undefined',
+#     'created_ago': '13\xa0minutes',
+#     'result': [{'from_name': 'answer',
+#       'to_name': 'instruction',
+#       'type': 'textarea',
+#       'value': {'text': ['Напиши рецензию ... и общее впечатление аудитории.']}}],
+#     'score': None,
+#     'cluster': None,
+#     'neighbors': None,
+#     'mislabeling': 0.0,
+#     'created_at': '2023-08-19T16:37:15.679473Z',
+#     'updated_at': '2023-08-19T16:37:15.679479Z',
+#     'task': 80},
+#    'result_count': 0,
+#    'unique_id': 'f66b37c5-eb5f-4ea3-80a8-87556bf2c82c',
+#    'last_action': None,
+#    'task': 80,
+#    'project': 1,
+#    'updated_by': 1,
+#    'parent_prediction': 332,
+#    'parent_annotation': None,
+#    'last_created_by': None}],
+#  'drafts': [],
+#  'predictions': [332],
+#  'data': {'id': '55bf98ea-932c-4131-bbe2-6ff94824070c',
+#   'instruction': "Write a symphony concert review, discussing the orchestra's performance and overall audience experience."},
+#  'meta': {},
+#  'created_at': '2023-08-19T16:37:15.674638Z',
+#  'updated_at': '2023-08-19T16:51:03.249830Z',
+#  'inner_id': 80,
+#  'total_annotations': 1,
+#  'cancelled_annotations': 0,
+#  'total_predictions': 1,
+#  'comment_count': 0,
+#  'unresolved_comment_count': 0,
+#  'last_comment_updated_at': None,
+#  'project': 1,
+#  'updated_by': 1,
+#  'comment_authors': []}
+
+
+def task_item_translate_item(item):
+    return {
+        'id': item['data']['id'],
+        'instruction': item['data']['instruction'],
+        'answer': item['annotations'][0]['result'][0]['value']['text'][0]
+    }
+
+
+def find_project_by_title(projects, title):
+    for project in projects:
+        if project.title == title:
+            return project
+        else:
+            raise KeyError(title)
