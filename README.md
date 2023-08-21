@@ -5,7 +5,11 @@ Dev env
 python -m venv ~/.venvs/rulm-sbs2
 source ~/.venvs/rulm-sbs2/bin/activate
 
-pip install tqdm pandas pyarrow openai
+pip install \
+  tqdm \
+  pandas pyarrow \
+  openai \
+  label-studio-sdk
 
 pip install ipywidgets ipykernel
 python -m ipykernel install --user --name rulm-sbs2
