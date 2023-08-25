@@ -1,4 +1,6 @@
 .env
+.gigachat
+
 .ipynb_checkpoints/
 __pycache__/
 

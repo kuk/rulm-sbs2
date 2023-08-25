@@ -1,11 +1,13 @@
 
 import re
+import sys
 import uuid
 import random
 import json
 import asyncio
 import pickle
 import html
+from dataclasses import dataclass
 from contextlib import redirect_stdout
 from collections import (
     Counter,
@@ -16,6 +18,8 @@ from tqdm import tqdm
 
 import numpy as np
 import pandas as pd
+
+import aiohttp
 
 import openai
 import label_studio_sdk
@@ -81,6 +85,35 @@ def read_dotenv(path):
         for line in file:
             if '=' in line:
                 yield line.rstrip('\n').split('=', 1)
+
+
+#######
+#
+#   HEADERS
+#
+#####
+
+
+# Host: developers.sber.ru
+# Origin: https://developers.sber.ru
+# Pragma: no-cache
+
+
+def read_headers(path):
+    with open(path) as file:
+        for line in file:
+            index = line.find(': ')
+            if index > 0:
+                line = line.rstrip('\n')
+                yield line[:index], line[index + 2:]
+
+
+# sticky_cookie_dp=2668b030f58b3efd; sticky_cookie_km=f5e5454e6e94ffe5; CRON=acff5ee7c28c708c6ffe998ee063f47a; sticky_cookie_cgw=d1d5685d6e85368d
+
+
+def parse_cookies(value):
+    for part in value.split('; '):
+        yield part.split('=', 1)
 
 
 #####
@@ -368,3 +401,133 @@ def annot_classify_item(item):
 
 def cosine_sim(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+#########
+#
+#   INFER
+#
+#######
+
+
+# turbo gpt-3.5-turbo-0301
+# turbo_2 gpt-3.5-turbo-0613
+# gpt4 gpt-4-0314
+# gpt4_2 gpt-4-0613
+
+
+######
+#
+#   OPENAI
+#
+#####
+
+
+async def openai_infer_worker(items, model, request_timeout=60):
+    for item in items:
+        try:
+            item['answer'] = await openai_singleturn(
+                item['instruction'],
+                model=model,
+                request_timeout=request_timeout
+            )
+        except openai.error.OpenAIError as error:
+            print(error, file=sys.stderr)
+
+
+########
+#
+#  GIGACHAT
+#
+#####
+
+
+@dataclass
+class GigachatClient:
+    session: ...
+    user_id: str
+    space_id: str
+
+
+def gigachat_client(headers, timeout=60):
+    # Otherwise aiohttp clipping payload?
+    headers.pop('Content-Length', None)
+
+    value = headers['Cookie']
+    cookies = dict(parse_cookies(value))
+
+    return GigachatClient(
+        session=aiohttp.ClientSession(
+            headers=headers,
+            cookies=cookies,
+            timeout=aiohttp.ClientTimeout(total=timeout)
+        ),
+        user_id=headers['user-id'],
+        space_id=headers['space-id'],
+    )
+
+
+async def gigachat_request(client, prompt, session_id, model_type='GigaChat:v1.13.0'):
+    response = await client.session.post(
+        'https://developers.sber.ru/api/chatwm/api/client/request',
+        json={
+            'request_json': prompt,
+            'session_id': session_id,
+            'model_type': model_type,
+            'preset': 'default',
+            'generate_alternatives': False,
+        }
+    )
+    response.raise_for_status()
+    data = await response.json()
+
+    # {
+    #     "result": "accepted",
+    #     "request_id": "5a9c58ff-bd31-4e97-bb6c-065534f614f4",
+    #     "generation_start_estimation_seconds": 0.1415866
+    # }
+    
+    assert data.get('result') == 'accepted', data
+    return data['request_id']
+
+
+async def gigachat_result_events(client, request_id):
+    response = await client.session.get(
+        'https://developers.sber.ru/api/chatwm/api/client/get_result_events',
+        params={
+            'request_id': request_id,
+            'space-id': client.space_id,
+            'user-id': client.user_id,
+        },
+    )
+    response.raise_for_status()
+
+    async for line in response.content:
+        # data: {"status":"in_progress","next_update_estimation_seconds":8.0,"model_type":"GigaChat:v1.13.0","model_type_display_name":"GigaChat:v1.13.0","responses":[{"id":6014992,"data":"\xd0\x94\xd1\x80\xd1\x8...xd0\xbd\xd1\x8b\xd0\xb5"}]}\r\n
+
+        line = line.decode('utf8')
+        if not line.startswith('data: '):
+            continue
+            
+        line = line[len('data: '):]
+        item = json.loads(line)
+        yield {
+            'status': item['status'],
+            'text': item['responses'][0]['data']
+        }
+
+
+async def gigachat_singleturn(client, prompt):
+    session_id = gen_uid()
+    request_id = await gigachat_request(client, prompt, session_id)
+    async for item in gigachat_result_events(client, request_id):
+        if item['status'] == 'ready':
+            return item['text']
+
+
+async def gigachat_infer_worker(client, items):
+    for item in items:
+        try:
+            item['answer'] = await gigachat_singleturn(client, item['instruction'])
+        except (aiohttp.ClientError, AssertionError) as error:
+            print(repr(error), file=sys.stderr)
