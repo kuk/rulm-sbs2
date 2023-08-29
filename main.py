@@ -7,6 +7,7 @@ import json
 import asyncio
 import pickle
 import html
+import time
 from dataclasses import dataclass
 from contextlib import redirect_stdout
 from collections import (
@@ -85,6 +86,46 @@ def read_dotenv(path):
         for line in file:
             if '=' in line:
                 yield line.rstrip('\n').split('=', 1)
+
+
+#######
+#
+#   CONC
+#
+######
+
+
+async def conc_producer(queue, items, iter_delay=0):
+    for item in items:
+        queue.put_nowait(item)
+        await asyncio.sleep(iter_delay)
+
+
+async def conc_worker(queue, func, **func_kwargs):
+    while True:
+        item = await queue.get()
+        try:
+            await func(item, **func_kwargs)
+        except Exception as error:
+            print(repr(error), file=sys.stderr)
+        finally:
+            queue.task_done()
+
+
+async def conc_apply(items, func, pool_size=1, iter_delay=0, **func_kwargs):
+    queue = asyncio.Queue()
+
+    tasks = []
+    for _ in range(pool_size):
+        tasks.append(asyncio.create_task(conc_worker(queue, func, **func_kwargs)))
+
+    await conc_producer(queue, items, iter_delay=iter_delay)
+    await queue.join()
+
+    for task in tasks:
+        task.cancel()
+
+    await asyncio.gather(*tasks, return_exceptions=True)
 
 
 #######
@@ -403,38 +444,6 @@ def cosine_sim(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 
-#########
-#
-#   INFER
-#
-#######
-
-
-# turbo gpt-3.5-turbo-0301
-# turbo_2 gpt-3.5-turbo-0613
-# gpt4 gpt-4-0314
-# gpt4_2 gpt-4-0613
-
-
-######
-#
-#   OPENAI
-#
-#####
-
-
-async def openai_infer_worker(items, model, request_timeout=60):
-    for item in items:
-        try:
-            item['answer'] = await openai_singleturn(
-                item['instruction'],
-                model=model,
-                request_timeout=request_timeout
-            )
-        except openai.error.OpenAIError as error:
-            print(error, file=sys.stderr)
-
-
 ########
 #
 #  GIGACHAT
@@ -449,7 +458,7 @@ class GigachatClient:
     space_id: str
 
 
-def gigachat_client(headers, timeout=60):
+def gigachat_client_init(headers, timeout=60):
     # Otherwise aiohttp clipping payload?
     headers.pop('Content-Length', None)
 
@@ -525,12 +534,6 @@ async def gigachat_singleturn(client, prompt):
             return item['text']
 
 
-async def gigachat_infer_worker(client, items):
-    for item in items:
-        try:
-            item['answer'] = await gigachat_singleturn(client, item['instruction'])
-        except (aiohttp.ClientError, AssertionError) as error:
-            print(repr(error), file=sys.stderr)
 ######
 #
 #   YAGPT
@@ -609,3 +612,41 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=1, 
     #   'num_tokens': '60'}}
 
     return data['result']['message']['text']
+
+
+#######
+#
+#   INFER
+#
+#####
+
+
+# turbo gpt-3.5-turbo-0301
+# turbo_2 gpt-3.5-turbo-0613
+# gpt4 gpt-4-0314
+# gpt4_2 gpt-4-0613
+
+
+async def openai_infer(item, model='gpt-3.5-turbo-0613', request_timeout=60):
+    try:
+        item['answer'] = await openai_singleturn(
+            item['instruction'],
+            model=model,
+            request_timeout=request_timeout
+        )
+    except openai.error.OpenAIError as error:
+        print(repr(error), file=sys.stderr)
+
+
+async def gigachat_infer(item, client):
+    try:
+        item['answer'] = await gigachat_singleturn(client, item['instruction'])
+    except (aiohttp.ClientError, AssertionError) as error:
+        print(repr(error), file=sys.stderr)
+
+
+async def yagpt_infer(item, client):
+    try:
+        item['answer'] = await yagpt_instruct(client, item['instruction'])
+    except aiohttp.ClientError as error:
+        print(repr(error), file=sys.stderr)
