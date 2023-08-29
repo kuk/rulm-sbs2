@@ -517,7 +517,7 @@ def yagpt_client_init(token, folder_id, timeout=60):
     )
 
 
-async def yagpt_instruct(client, instruction, model='general', temperature=1, max_tokens=2000):
+async def yagpt_instruct(client, instruction, model='general', temperature=0, max_tokens=2000):
     response = await client.session.post(
         'https://llm.api.cloud.yandex.net/llm/v1alpha/instruct',
         json={
@@ -542,7 +542,7 @@ async def yagpt_instruct(client, instruction, model='general', temperature=1, ma
     return data['result']['alternatives'][0]['text']
 
 
-async def yagpt_singleturn(client, instruction, model='general', temperature=1, max_tokens=2000):
+async def yagpt_singleturn(client, instruction, model='general', temperature=0, max_tokens=2000):
     response = await client.session.post(
         'https://llm.api.cloud.yandex.net/llm/v1alpha/chat',
         json={
@@ -624,12 +624,17 @@ class Limiter:
 
         self.prev = time.monotonic()
 
-            
-async def yagpt_infer_worker(client, items, limiter):
+
+async def yagpt_infer_worker(client, limiter, items, mode='instruct'):
+    assert mode in ('chat', 'instruct'), mode
+    func = yagpt_instruct
+    if mode == 'chat':
+        func = yagpt_singleturn
+
     for item in items:
         await limiter.sleep()
 
         try:
-            item['answer'] = await yagpt_instruct(client, item['instruction'])
+            item['answer'] = await func(client, item['instruction'])
         except aiohttp.ClientError as error:
             print(repr(error), file=sys.stderr)
