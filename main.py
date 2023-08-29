@@ -531,3 +531,81 @@ async def gigachat_infer_worker(client, items):
             item['answer'] = await gigachat_singleturn(client, item['instruction'])
         except (aiohttp.ClientError, AssertionError) as error:
             print(repr(error), file=sys.stderr)
+######
+#
+#   YAGPT
+#
+#####
+
+
+# https://cloud.yandex.com/en/docs/yandexgpt/api-ref/TextGeneration/instruct
+
+
+@dataclass
+class YagptClient:
+    session: ...
+    token: str
+    folder_id: str
+
+
+def yagpt_client_init(token, folder_id, timeout=60):
+    return YagptClient(
+        session=aiohttp.ClientSession(
+            headers={
+                'Authorization': f'Bearer {token}',
+                'x-folder-id': folder_id
+            },
+            timeout=aiohttp.ClientTimeout(total=timeout)
+        ),
+        token=token,
+        folder_id=folder_id
+    )
+
+
+async def yagpt_instruct(client, instruction, model='general', temperature=1, max_tokens=2000):
+    response = await client.session.post(
+        'https://llm.api.cloud.yandex.net/llm/v1alpha/instruct',
+        json={
+            'model': model,
+            'generationOptions': {
+                'partialResults': False,
+                'temperature': temperature,
+                'maxTokens': max_tokens,
+            },
+            'instructionText': instruction,
+            'requestText': None
+        }
+    )
+    response.raise_for_status()
+    data = await response.json()
+
+    #   {'result': {'alternatives': [{'text': 'На самом ...енно в своей форме.',
+    #   'score': -2.3407514095306396,
+    #   'num_tokens': '38'}],
+    # 'num_prompt_tokens': '12'}}
+
+    return data['result']['alternatives'][0]['text']
+
+
+async def yagpt_singleturn(client, instruction, model='general', temperature=1, max_tokens=2000):
+    response = await client.session.post(
+        'https://llm.api.cloud.yandex.net/llm/v1alpha/chat',
+        json={
+            'model': model,
+            'generationOptions': {
+                'partialResults': False,
+                'temperature': temperature,
+                'maxTokens': max_tokens,
+            },
+            'messages': [],
+            'instructionText': instruction,
+        }
+    )
+    response.raise_for_status()
+    data = await response.json()
+
+    # {'result': {'message': {'role': 'Ассистент',
+    #    'text': "Это высказывание о смертной казни ...к преступнику Жоржу Плотнику'у."},
+    #   'num_tokens': '60'}}
+
+    return data['result']['message']['text']
