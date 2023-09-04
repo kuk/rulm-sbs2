@@ -328,11 +328,11 @@ def annot_translate_item(item):
 <View>
   <View style="display: grid; grid-template: auto/1fr 1fr">
     <Header value="instruction" />
-    <Header value="tags" />
+    <Header value="category" />
 
     <Text name="instruction" value="$instruction" />
 
-    <Choices name="tags" toName="instruction" choice="single" showInline="true">
+    <Choices name="category" toName="instruction" choice="single" showInline="true">
       <Choice value="brainstorm" />
       <Choice value="reason" />
       <Choice value="qa" />
@@ -371,11 +371,11 @@ def classify_annot_item(item):
         },
         'predictions': [{
             'result': [{
-                'from_name': 'tags',
+                'from_name': 'category',
                 'to_name': 'instruction',
                 'type': 'choices',
                 'value': {
-                    'choices': item['tags']
+                    'choices': [item['category']]
                 }
             }]
         }]
@@ -383,15 +383,15 @@ def classify_annot_item(item):
 
 
 def annot_classify_item(item):
-    tags = []
+    category = None
     annotation = item['annotations'][0]
     if not annotation['was_cancelled'] and annotation['result']:
-        tags = annotation['result'][0]['value']['choices']
+        category = annotation['result'][0]['value']['choices'][0]
 
     return {
         'id': item['data']['id'],
         'instruction': item['data']['instruction'],
-        'tags': tags
+        'category': category
     }
 
 
