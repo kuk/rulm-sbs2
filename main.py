@@ -33,6 +33,16 @@ import label_studio_sdk
 #####
 
 
+def write_json(path, data):
+    with open(path, 'w') as file:
+        json.dump(data, file, ensure_ascii=False, indent=2)
+
+
+def read_json(path):
+    with open(path) as file:
+        return json.load(file)
+
+
 def write_jsonl(path, items):
     with open(path, 'w') as file:
         for item in items:
