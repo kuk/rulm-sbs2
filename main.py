@@ -269,7 +269,7 @@ async def openai_translate(instruction):
 
 #######
 #
-#   TRANSLATE ANNOT
+#   TRANSLATE
 #
 ####
 
@@ -290,7 +290,7 @@ async def openai_translate(instruction):
 '''
 
 
-def translate_annot_item(item):
+def translate_label_item(item):
     return {
         'data': {
             'id': item['id'],
@@ -309,7 +309,7 @@ def translate_annot_item(item):
     }
 
 
-def annot_translate_item(item):
+def label_translate_item(item):
     return {
         'id': item['data']['id'],
         'instruction': item['data']['instruction'],
@@ -319,7 +319,7 @@ def annot_translate_item(item):
 
 #######
 #
-#   CLASSIFY ANNOT
+#   CLASSIFY
 #
 ###
 
@@ -363,7 +363,7 @@ def annot_translate_item(item):
 '''
 
 
-def classify_annot_item(item):
+def classify_label_item(item):
     return {
         'data': {
             'id': item['id'],
@@ -382,7 +382,7 @@ def classify_annot_item(item):
     }
 
 
-def annot_classify_item(item):
+def label_classify_item(item):
     category = None
     annotation = item['annotations'][0]
     if not annotation['was_cancelled'] and annotation['result']:
@@ -648,3 +648,4 @@ async def yagpt_infer_worker(client, limiter, items, mode='instruct'):
             item['answer'] = await func(client, item['instruction'])
         except aiohttp.ClientError as error:
             print(repr(error), file=sys.stderr)
+
