@@ -594,6 +594,9 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=0, 
 # yagpt_chat v1alpha/chat model=general
 # yagpt_alisa ya.ru chat 2023-08
 
+# saiga2_7b
+# saiga2_13b
+
 
 async def openai_translate_worker(items):
     for item in items:
