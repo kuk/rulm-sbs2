@@ -239,7 +239,7 @@ def openai_embed_batch(texts, model='text-embedding-ada-002'):
 
 #######
 #
-#   TRANSLATE
+#   OPENAI TRANSLATE
 #
 ######
 
@@ -256,6 +256,74 @@ async def openai_translate(instruction):
     return re.sub(r'\[\[+|\]\]+', '', answer).strip()
 
 
+#######
+#
+#   OPENAI SBS
+#
+######
+
+
+async def openai_sbs(instruction, answer_a, answer_b):
+    prompt = f'''Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. You should choose the assistant that follows the user's instructions and answers the user's question better. Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses. Begin your evaluation by comparing the two responses and provide a short explanation. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "[[A]]" if assistant A is better, "[[B]]" if assistant B is better, and "[[TIE]]" for a tie.
+
+[User Question]
+{instruction}
+
+[The Start of Assistant A's Answer]
+{answer_a}
+[The End of Assistant A's Answer]
+
+[The Start of Assistant B's Answer]
+{answer_b}
+[The End of Assistant B's Answer]
+'''
+    return await openai_singleturn(prompt, model='gpt-3.5-turbo-0613')
+    
+
+def sbs_answer_result(answer):
+    match = re.search(r'\[\[(A|B|TIE)\]\]', answer)
+    if match:
+        return match.group(1).lower()
+
+
+def sbs_agg_swap(result_ab, result_ba):
+    if not result_ab or not result_ba:
+        return
+
+    accum = 0
+    if result_ab == 'a':
+        accum -= 1
+    elif result_ab == 'b':
+        accum += 1
+            
+    if result_ba == 'a':
+        accum += 1
+    elif result_ba == 'b':
+        accum -= 1
+            
+    result = 'tie'
+    if accum < 0:
+        result = 'a'
+    elif accum > 0:
+        result = 'b'
+
+    return result
+
+
+def sbs_name_models(text, model_a, model_b):
+    def repl(match):
+        value = match.group(1)
+        assert value in ('A', 'B'), value
+        if value == 'A':
+            return model_a
+        elif value == 'B':
+            return model_b
+
+    text = re.sub(r'Assistant (A|B)', repl, text)
+    text = re.sub(r'\[\[(A|B)\]\]', repl, text)
+    return text
+
+
 ##########
 #
 #  LABEL STUDIO
@@ -269,7 +337,7 @@ async def openai_translate(instruction):
 
 #######
 #
-#   TRANSLATE
+#   LABEL TRANSLATE
 #
 ####
 
@@ -312,14 +380,13 @@ def translate_label_item(item):
 def label_translate_item(item):
     return {
         'id': item['data']['id'],
-        'instruction': item['data']['instruction'],
         'answer': item['annotations'][0]['result'][0]['value']['text'][0]
     }
 
 
 #######
 #
-#   CLASSIFY
+#   LABEL CLASSIFY
 #
 ###
 
@@ -390,8 +457,81 @@ def label_classify_item(item):
 
     return {
         'id': item['data']['id'],
-        'instruction': item['data']['instruction'],
         'category': category
+    }
+
+
+######
+#
+#   LABEL SBS
+#
+######
+
+
+'''
+<View>
+  <View>
+    <Text name="instruction" value="$instruction" />
+  </View>
+
+  <View style="display: grid; grid-template: auto/1fr 1fr">
+    <Header value="$model_a" />
+    <Header value="$model_b" />
+
+    <Text name="answer_a" value="$answer_a" />
+    <Text name="answer_b" value="$answer_b" />
+  </View>
+
+  <View>
+    <Text name="answer_ab" value="$answer_ab" />
+    <Text name="answer_ba" value="$answer_ba" />
+
+    <Choices name="result" toName="instruction" choice="single" showInline="true">
+      <Choice alias="a" value="A лучше"/>
+      <Choice alias="b" value="B лучше" />
+      <Choice alias="tie" value="Ничья" />
+    </Choices>
+  </View>
+</View>
+'''
+
+
+def sbs_label_item(item):
+    return {
+        'data': {
+            'id': item['id'],
+            'model_a': item['model_a'],
+            'model_b': item['model_b'],
+            'instruction': item['instruction'],
+            'answer_a': item['answer_a'],
+            'answer_b': item['answer_b'],
+            'answer_ab': sbs_name_models(item['answer_ab'], item['model_a'], item['model_b']),
+            'answer_ba': sbs_name_models(item['answer_ba'], item['model_b'], item['model_a']),
+        },
+        'predictions': [{
+            'result': [{
+                'from_name': 'result',
+                'to_name': 'instruction',
+                'type': 'choices',
+                'value': {
+                    'choices': [item['result']]
+                }
+            }]
+        }]
+    }
+
+
+def label_sbs_item(item):
+    result = None
+    annotation = item['annotations'][0]
+    if not annotation['was_cancelled'] and annotation['result']:
+        result = annotation['result'][0]['value']['choices'][0]
+
+    return {
+        'id': item['data']['id'],
+        'model_a': item['data']['model_a'],
+        'model_b': item['data']['model_b'],
+        'result': result
     }
 
 
@@ -598,12 +738,26 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=0, 
 # saiga2_13b
 
 
-async def openai_translate_worker(items):
+async def translate_worker(items):
     for item in items:
         try:
             item['answer'] = await openai_translate(item['instruction'])
         except openai.error.OpenAIError as error:
             print(repr(error), file=sys.stderr)
+
+
+async def sbs_worker(items):
+    for item in items:
+        try:
+            item['answer_ab'] = await openai_sbs(item['instruction'], item['answer_a'], item['answer_b'])
+            item['answer_ba'] = await openai_sbs(item['instruction'], item['answer_b'], item['answer_a'])
+        except openai.error.OpenAIError as error:
+            print(repr(error), file=sys.stderr)
+
+        else:
+            item['result_ab'] = sbs_answer_result(item['answer_ab'])
+            item['result_ba'] = sbs_answer_result(item['answer_ba'])
+            item['result'] = sbs_agg_swap(item['result_ab'], item['result_ba'])
 
 
 async def openai_infer_worker(items, model, request_timeout=60):
