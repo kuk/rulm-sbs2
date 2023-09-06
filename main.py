@@ -287,27 +287,12 @@ def sbs_answer_result(answer):
 
 
 def sbs_agg_swap(result_ab, result_ba):
-    if not result_ab or not result_ba:
-        return
-
-    accum = 0
-    if result_ab == 'a':
-        accum -= 1
-    elif result_ab == 'b':
-        accum += 1
-            
-    if result_ba == 'a':
-        accum += 1
-    elif result_ba == 'b':
-        accum -= 1
-            
-    result = 'tie'
-    if accum < 0:
-        result = 'a'
-    elif accum > 0:
-        result = 'b'
-
-    return result
+    if result_ab == 'a' and result_ba == 'b':
+        return 'a'
+    elif result_ab == 'b' and result_ba == 'a':
+        return 'b'
+    elif result_ab == result_ba == 'tie':
+        return 'tie'
 
 
 def sbs_name_models(text, model_a, model_b):
