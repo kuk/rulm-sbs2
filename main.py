@@ -483,14 +483,18 @@ def label_classify_item(item):
   </View>
 
   <View>
+    <Choices name="result" toName="instruction" choice="single" showInline="true">
+      <Choice alias="a" value="$model_a"/>
+      <Choice alias="b" value="$model_b" />
+      <Choice alias="tie" value="tie" />
+    </Choices>
+
+    <Header value="ab" />
     <Text name="answer_ab" value="$answer_ab" />
+
+    <Header value="ba" />
     <Text name="answer_ba" value="$answer_ba" />
 
-    <Choices name="result" toName="instruction" choice="single" showInline="true">
-      <Choice alias="a" value="A лучше"/>
-      <Choice alias="b" value="B лучше" />
-      <Choice alias="tie" value="Ничья" />
-    </Choices>
   </View>
 </View>
 '''
