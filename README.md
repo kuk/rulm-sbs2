@@ -8,6 +8,7 @@ source ~/.venvs/rulm-sbs2/bin/activate
 pip install \
   tqdm \
   pandas pyarrow \
+  matplotlib \
   aiohttp \
   openai \
   label-studio-sdk
