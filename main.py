@@ -772,12 +772,13 @@ async def sbs_worker(items):
 
         else:
             result = sbs_answer_result(answer)
-            if swap:
-                result = sbs_swap_result(result)
+            if result:
+                if swap:
+                    result = sbs_swap_result(result)
 
-            item['swap'] = swap
-            item['answer'] = answer
-            item['result'] = result
+                item['swap'] = swap
+                item['answer'] = answer
+                item['result'] = result
 
 
 async def openai_infer_worker(items, model, request_timeout=60):
