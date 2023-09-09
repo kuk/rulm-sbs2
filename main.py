@@ -466,6 +466,7 @@ def classify_label_item(item, model_answers):
             'instruction': item['instruction'],
             'answers': answers,
             'max_sim': item['max_sim'],
+            'category': item['category'],
         }
     }
     if item['category']:
