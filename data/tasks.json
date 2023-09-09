@@ -81,7 +81,7 @@
     "id": "2063abe1-6f2e-4d78-bc7c-3ddae91b5a6a",
     "source": "alpaca",
     "instruction": "Внимательно прочитай документацию и посмотри, есть ли раздел, который описывает твою конкретную проблему. Часто ответ будет прямо перед тобой. Если это не так, попробуй поискать ключевые термины, связанные с твоей проблемой. Предоставь полезные ссылки по данному поисковому запросу.\n\n\"sql найти дублирующиеся значения\"",
-    "category": "enumerate"
+    "category": "bad instruction"
   },
   {
     "id": "4f656577-483f-451f-bdcf-dc6b368cda99",
@@ -147,13 +147,13 @@
     "id": "33bddd91-fc29-4248-af3d-ddb6d0eeea2c",
     "source": "alpaca",
     "instruction": "Составьте список навыков для программиста, которые хорошо будет написать в LinkedIn.",
-    "category": "enumerate"
+    "category": "brainstorm"
   },
   {
     "id": "be60cf51-d54e-4098-9433-62d78da5d941",
     "source": "alpaca",
     "instruction": "В рамках оценки навыков на LinkedIn вам будет предложено ответить на следующий вопрос:\n\n\"Вы обнаружили, что ваш проект имеет и тег, и ветку с названием push-notifications, это вызывает путаницу при попытке показать данную ссылку. Как указать ветку?\"",
-    "category": "qa"
+    "category": null
   },
   {
     "id": "1a4d09d5-d7e2-45e8-b75e-96826aca7b2f",
@@ -171,7 +171,7 @@
     "id": "e2ac2bb3-17ca-498c-840d-4e0d64149a47",
     "source": "alpaca",
     "instruction": "Какие другие товары Amazon могут быть интересны тому, кто смотрел данную продукцию?\n\nZeroll Zerolon Hardcoat Anodized Commercial Ice Cream Scoop with Unique Liquid Filled Heat Conductive Handle Easy Release Made in USA, 1.5-Ounce, Black",
-    "category": "enumerate"
+    "category": null
   },
   {
     "id": "767dcfa5-37b8-4833-8468-0ca2aa0bc094",
@@ -189,7 +189,7 @@
     "id": "32b3ecb6-c567-4c1e-92b8-c6a475e5f1ec",
     "source": "alpaca",
     "instruction": "Напиши краткое описание сериала.\n\n\"Вампиры средней полосы (2021)\"",
-    "category": "summary"
+    "category": "writing"
   },
   {
     "id": "bdfce73d-626f-4890-8934-bd578b57da5b",
@@ -207,7 +207,7 @@
     "id": "d16faf58-06c2-47c3-84e2-4d2ee2c7341c",
     "source": "alpaca",
     "instruction": "К каким жанрам относится этот фильм?\n\n\"9 рота\"",
-    "category": "extract"
+    "category": "qa"
   },
   {
     "id": "b498eda2-60e8-48cc-bcab-defb25065b9e",
@@ -255,7 +255,7 @@
     "id": "b9bda205-af2f-4318-b614-7c10d9e802da",
     "source": "alpaca",
     "instruction": "Как бы ты описал значение текста этой песни?\n\nMy lover’s got humor\nShe’s the giggle at a funeral\nKnows everybody’s disapproval\nI should’ve worshipped her sooner",
-    "category": "extract"
+    "category": "summary"
   },
   {
     "id": "4570a12c-d737-4980-8721-e34ddafc6144",
@@ -267,7 +267,7 @@
     "id": "7d65ee32-ea9f-42fb-8071-9536cc398667",
     "source": "alpaca",
     "instruction": "Составьте список самых популярных подкастов.",
-    "category": "qa"
+    "category": "enumerate"
   },
   {
     "id": "d39f7c07-16d2-4772-ac9b-cf91b189f4a4",
@@ -279,7 +279,7 @@
     "id": "ffc6b38c-7f2a-47e1-8081-af8b74efa4dc",
     "source": "alpaca",
     "instruction": "Тебе предоставляется описание, которое содержит набор фактов. Тебе предстоит создать историю на основе этих фактов. Недостающие элементы нужно заполнить с помощью воображения.\n\n\"Десять европейских футбольных команд - Нидерланды, Англия, Бельгия, Дания, Франция, Германия, Норвегия, Швеция, Швейцария и Уэльс - примут участие в кампании \"OneLove\"\"",
-    "category": "writing"
+    "category": "bad instruction"
   },
   {
     "id": "a2e58d09-901f-449e-b4ed-7e351d91403c",
@@ -315,7 +315,7 @@
     "id": "2297876b-c6a0-4d5e-bc5a-30ebb7548747",
     "source": "alpaca",
     "instruction": "Вам нужно написать описание вакансии на основе предоставленной информации. Помните, что потенциальные сотрудники часто получают первое впечатление о вашей компании из описания вакансии. Поэтому описание работы должно передавать привлекательность компании.\n\nКомпания: [название компании]\nРабота: Инженер-программист\nОбязанности по работе:\n- Проходить и проводить код-ревью с другими инженерами.\n- Писать модульные, интеграционные и конечные тесты для проверки функциональности с использованием автоматизированных тестовых фреймворков, таких как Pytest.\n- Сотрудничать с коллегами-программистами для создания функций, запрошенных бизнес-стейкхолдерами.\n- Участвовать в командных Agile-проектах для разработки, тестирования и отладки сложных систем обработки данных и приложений анализа данных с использованием систем обработки больших данных, таких как Apache Spark.\n- Диагностировать, отлаживать и выполнять анализ причин возникновения проблем и дефектов.\n\nНавыки и опыт:\n- Опыт работы с современным языком программирования. Мы активно используем Python и Pyspark.\n- Опыт работы с облачными системами, такими как AWS или Azure.\n- Опыт написания SQL-запросов.\n- Крепкие навыки письменного и устного общения.\n- Желание работать в высококоллаборативной среде.\n- Некоторый опыт визуализации, такой как Tableau или PowerBI, будет полезным",
-    "category": "writing"
+    "category": "bad instruction"
   },
   {
     "id": "4211fcb5-6229-4ce8-9f8b-ba280aa9f999",
@@ -363,13 +363,13 @@
     "id": "ff7a1ec8-88b2-4113-9f2c-aac84f1d0b5e",
     "source": "alpaca",
     "instruction": "Используйте соответствующие эмодзи, чтобы передать значение данного текста:\n\n\"Милый кот\nигривый\nМягкий\"",
-    "category": "extract"
+    "category": null
   },
   {
     "id": "9f8a4522-d90b-42a2-b504-3b7e2f87998f",
     "source": "alpaca",
     "instruction": "Тебе предлагается тема для публикации на YouTube, и на основе этой информации тебе необходимо написать хук (зацепку) для начала поста. Захватывающий хук заинтересует твоих зрителей и заставит их продолжать чтение. Было бы замечательно, если ты сможешь придумать как можно больше таких хуков.\n\n\"Видео, демонстрирующее, как приготовить вкусный кофе\"",
-    "category": "writing"
+    "category": "bad instruction"
   },
   {
     "id": "e943057e-5efc-411e-94a6-750b1631cce5",
@@ -465,13 +465,13 @@
     "id": "fc1e0465-c8ac-439a-9aea-6ad1eb6094b8",
     "source": "alpaca",
     "instruction": "Дай краткое описание сюжета фильма или сериала.\n\n\"Во все тяжкие (телесериал 2008–2013)\"",
-    "category": "summary"
+    "category": "writing"
   },
   {
     "id": "b909d45c-a096-479e-bb0d-e7df7d5c91bf",
     "source": "alpaca",
     "instruction": "Определите, могут ли дети смотреть данный фильм. Укажите, почему вы считаете, что фильм несоответствующий для них, если так считаете.\n\n\"Темный рыцарь (2008)\"",
-    "category": "extract"
+    "category": "qa"
   },
   {
     "id": "a84e45c3-f03f-4728-ac3a-3931c7d1cd7c",
@@ -495,7 +495,7 @@
     "id": "f01cb0ac-0487-4945-9b07-08bba1ffbd47",
     "source": "alpaca",
     "instruction": "Составьте анкету, которая поможет гостям отеля написать отзывы об отеле.",
-    "category": "outline"
+    "category": null
   },
   {
     "id": "0b05b687-7766-4584-a81a-157a56f03592",
@@ -525,13 +525,13 @@
     "id": "74800234-3b49-4dda-9ea9-529512b581ee",
     "source": "alpaca",
     "instruction": "Дано два вопроса. Проверьте, не дублируют ли они друг друга.\n\nВопрос 1: Я пытаюсь понять преимущества параллелизации через процессы перед параллелизацией через потоки. Я знаю, что параллелизация через процессы позволяет обойти GIL, но какие еще есть преимущества, и не может ли многопоточность делать то же самое?\n\nВопрос 2: Я изучаю, как использовать модули threading и multiprocessing в Python для параллельного выполнения определенных операций и ускорения моего кода.\nМне трудно (возможно, потому, что у меня нет никаких теоретических знаний по этому поводу) понять, в чем разница между threading.Thread() и multiprocessing.Process().\nКроме того, мне не совсем ясно, как создать очередь заданий и заставить только 4 из них выполняться параллельно, в то время как другие ожидают освобождения ресурсов перед выполнением.\nПримеры в документации понятны, но не очень исчерпывающи. Как только я пытаюсь немного усложнить ситуацию, я получаю множество странных ошибок (например, метод, который нельзя запиклить, и так далее).\nТак когда я должен использовать модули threading, а когда multiprocessing?\nМожете ли скинуть статьи, которые объясняют концепции, лежащие в основе этих двух модулей, и как правильно их использовать для сложных задач?",
-    "category": "extract"
+    "category": null
   },
   {
     "id": "1fedebc5-ad1e-4e47-a734-8e189e4d8f31",
     "source": "alpaca",
     "instruction": "Разработай задачу по программированию на заданную тему. Приведи несколько примеров и ограничений для улучшения понимания задачи.\n\n\"Динамическое программирование\"",
-    "category": "outline"
+    "category": "coding"
   },
   {
     "id": "1d00531c-079d-4c56-89f7-b7ad64b0ba48",
@@ -561,7 +561,7 @@
     "id": "8bb8bb76-e0d5-4e66-8854-6d74a9a07189",
     "source": "alpaca",
     "instruction": "Данная статья должна быть проверена на наличие научных ошибок и, если необходимо, исправлена.\n\n\"Цинк является важным минералом, необходимым для поддержания хорошего здоровья. Он участвует во множестве биохимических процессов в организме и необходим для правильного функционирования иммунной системы. Излишек цинка не является вредным, так как он выводится с мочой.\"",
-    "category": "rewrite"
+    "category": "closed qa"
   },
   {
     "id": "6c76811b-9a11-4781-82c2-82692f2a236e",
@@ -639,7 +639,7 @@
     "id": "984523a6-922f-4a85-9212-9051d00280ba",
     "source": "alpaca",
     "instruction": "Напиши шаги, которые нужно предпринять для разработки описанной идеи:\n\n\"Что можно сделать переработкой и переиспользованием некоторых старых, ранее использованных материалов?\nВозьми старую использованную вещь и преврати ее в что-то новое и отличное!\"",
-    "category": "outline"
+    "category": null
   },
   {
     "id": "9b1eda42-c552-4e83-b395-08a5bd11bc15",
@@ -699,7 +699,7 @@
     "id": "3b246063-4218-4d3d-807c-f31be981d516",
     "source": "alpaca",
     "instruction": "Напиши список дел на основе предоставленной информации.\n\n\"Регулярные задачи в аптеке\"",
-    "category": "outline"
+    "category": null
   },
   {
     "id": "c6682b0b-76fc-47e8-a778-cf7de5bbb792",
@@ -711,13 +711,13 @@
     "id": "962526c4-a78a-45f8-91b0-d2506269508e",
     "source": "alpaca",
     "instruction": "Составьте план повестки дня для ежедневных стэндап-встреч. Назначьте продолжительность времени каждой теме в повестке дня.",
-    "category": "outline"
+    "category": null
   },
   {
     "id": "01a8103f-78fa-4bb9-9cc1-6326bbebd0a1",
     "source": "alpaca",
     "instruction": "Как будет \"добрый вечер\" по-французски?",
-    "category": "rewrite"
+    "category": "qa"
   },
   {
     "id": "71333ce3-58fa-4f2d-8a36-fe38636ee34d",
@@ -789,7 +789,7 @@
     "id": "45e21202-4e86-4238-9a88-20bc6277edd1",
     "source": "alpaca",
     "instruction": "Дай краткое описание указанной книги.\n\n\"Преступление и наказание\"",
-    "category": "summary"
+    "category": "writing"
   },
   {
     "id": "583d427b-71ac-444c-b5ea-f6282881662d",
@@ -837,7 +837,7 @@
     "id": "ba1d2459-bb54-4750-a61f-eb6d6842f70f",
     "source": "alpaca",
     "instruction": "Создай таблицу, в которой будут перечислены все игры, отвечающие указанным критериям в Национальной Футбольной Лиге. В качестве столбцов таблицы использовать сезон, местное время, игру и счет.\n\n\"Домашние игры команды Рэйвенс в 2011 году\"",
-    "category": "qa"
+    "category": "enumerate"
   },
   {
     "id": "4d344c6e-fec3-473b-914c-e1c6b6bdbcbd",
@@ -849,7 +849,7 @@
     "id": "d156b34b-a315-4287-8b6c-7551529adf43",
     "source": "alpaca",
     "instruction": "Тебя будут проверять на знание классических острот и афоризмов. Напиши оригинальную цитату в качестве ответа.\n\n\"два вещи бесконечны\"",
-    "category": "joke"
+    "category": null
   },
   {
     "id": "8c4961e5-214c-4b2a-8a83-edbe746a22df",
@@ -1041,7 +1041,7 @@
     "id": "4ab1d8b0-ee0d-4e68-bed6-fcfe96aea6b7",
     "source": "alpaca",
     "instruction": "Извлеките метод, использованный в исследовании. Укажите точные предложения, которые обсуждают этот метод.\n\n\"We present a state-of-the-art speech recognition system developed using end-to-end deep learning. Our architecture is significantly simpler than traditional speech systems, which rely on laboriously engineered processing pipelines; these traditional systems also tend to perform poorly when used in noisy environments. In contrast, our system does not need hand-designed components to model background noise, reverberation, or speaker variation, but instead directly learns a function that is robust to such effects. We do not need a phoneme dictionary, nor even the concept of a \"phoneme.\" Key to our approach is a well-optimized RNN training system that uses multiple GPUs, as well as a set of novel data synthesis techniques that allow us to efficiently obtain a large amount of varied data for training. Our system, called Deep Speech, outperforms previously published results on the widely studied Switchboard Hub5'00, achieving 16.0% error on the full test set. Deep Speech also handles challenging noisy environments better than widely used, state-of-the-art commercial speech systems\"",
-    "category": "extract"
+    "category": "closed qa"
   },
   {
     "id": "d328b2a8-0b45-42c1-85d5-f9491b736d67",
@@ -1065,7 +1065,7 @@
     "id": "76aefb5f-f679-4541-b701-781e215a418d",
     "source": "alpaca",
     "instruction": "Отнесите данный журнал на основе его содержания к одной из категорий: Политика, Развлечения, Технологии, Бизнес, Воспитание детей, Здоровье и целительство, Кулинария, Еда и вино, Искусство и литература,\n\n\"Игромания\"",
-    "category": "extract"
+    "category": "qa"
   },
   {
     "id": "88ee781f-8536-49c2-a72a-898bfe73c640",
@@ -1119,7 +1119,7 @@
     "id": "61ec4494-733e-4ad8-b7e3-203ba783f075",
     "source": "alpaca",
     "instruction": "Перечислите понятия, которые следует усвоить, прежде чем приступать к данной сложной теме.\n\n\"Deep Learning\"",
-    "category": "outline"
+    "category": "enumerate"
   },
   {
     "id": "ee52a799-111f-4a65-b00e-3d0537cc77c5",
@@ -1155,7 +1155,7 @@
     "id": "cd69209d-431b-4d80-98e3-569d51e07e35",
     "source": "alpaca",
     "instruction": "Создайте список подтем для данной темы.\n\n\"Теория музыки\"",
-    "category": "outline"
+    "category": "enumerate"
   },
   {
     "id": "2ff50019-afaf-4e18-85d8-b96fbf715192",
@@ -1179,7 +1179,7 @@
     "id": "c8f70e57-8409-4e80-8bde-8d36f903ca87",
     "source": "alpaca",
     "instruction": "Сделай самари:\n\nРоуз: Анализировать данные и представить результаты\nДжон: Предложить новую идею\nДжейн: Назначена руководителем проекта\nТом: Нуждается в большем времени для исправления программной ошибки",
-    "category": "summary"
+    "category": "bad instruction"
   },
   {
     "id": "40e1f76e-a026-4ca5-a0b4-90003f1a778b",
@@ -1245,7 +1245,7 @@
     "id": "17f71289-5a62-4695-b117-c74fd5109cd3",
     "source": "alpaca",
     "instruction": "Проанализируйте описание недвижимости и скажите, что в нем хорошо и что плохо, а также перечислите его основные особенности. Отвечай по-русски\n\n\"There's real magic in combining inherently compelling Victorian architecture with a modern aesthetic. Add in an extraordinary multi-level garden & the result is the undeniable elegance of 444 29th St. The front of the home is light-filled w/ a seamless connection between living, dining & kitchen. Newly updated kitchen w/ quartz counters & upgraded appliances. A lg dining rm has a bay of windows &, when paired w/ the adjacent living rm, provides an ideal space to entertain. 2 lg bdrms on this level are at the rear. Both w/ lg closets & walk out to the garden. Stylishly remodeled full bath on this level. 3rd bdrm/2nd full bath are located on the ground floor - perfect as a guest rm, home office, fitness area, etc. The enormous garden occupies an extra deep lot & is beautifully landscaped & terraced. Laundry/storage rm, 1-car garage pkg, Tesla solar panels. Prime, flat part of Noe Valley - short walk to all that Noe has to offer. Steps from the J-Church & convenient to shuttles/freeways.\"",
-    "category": "extract"
+    "category": "closed qa"
   },
   {
     "id": "75b798d7-037b-482b-a417-a811146d788a",
@@ -1269,7 +1269,7 @@
     "id": "4df77eec-4017-4040-b962-9b099227f215",
     "source": "alpaca",
     "instruction": "Юзер стори описывает, что именно пользователь хочет, чтобы система делала, в то время как критерии приемки описывают условия, которым должна удовлетворять конкретная юзер стори. Создайте основные критерии приемки на основе данной юзер стори.\n\n\"Как пользователь, я хочу использовать поле поиска для ввода города, имени или улицы, чтобы найти подходящие варианты отелей.\"",
-    "category": "outline"
+    "category": null
   },
   {
     "id": "70cae5cf-7a21-4a41-a339-006beacc3420",
@@ -1281,7 +1281,7 @@
     "id": "240267c6-05db-40e0-8166-2788c83de1d3",
     "source": "alpaca",
     "instruction": "Напишите тикет Jira для данной задачи.\n\n\"Выход на работу нового сотрудника\"",
-    "category": "outline"
+    "category": "writing"
   },
   {
     "id": "db5a0b51-9fc2-43b4-86de-553814f32f77",
@@ -1347,7 +1347,7 @@
     "id": "d786f6ed-8708-46a9-ba71-47e3858ea230",
     "source": "alpaca",
     "instruction": "Возьми описание продукта и напиши для него креативное объявление.\n\n\"Документальные камеры позволяют учителям показывать документы, книги или другие материалы, чтобы их студенты могли видеть.\"",
-    "category": "rewrite"
+    "category": "writing"
   },
   {
     "id": "0c2d9177-be81-46f2-a9f6-4c8b5f9a2b8d",
@@ -1371,7 +1371,7 @@
     "id": "b1b04565-e291-4e98-9859-e392d405e553",
     "source": "alpaca",
     "instruction": "Предскажи, сколько звезд автор поставит ресторану на основе отзыва на Yelp.\n\n\"Похоже, это типичное туристическое место, где еда была среднего качества. Обслуживание было неплохим, не отличным, но не самым плохим. Хлеб был очень хорошим. Я заказала жареные мидии. У них был сладкий вкус лука Видалия. Совсем не было необходимости в картофельных ломтиках, так как они были мокрые без особого вкуса. Мой парень заказал пасту с курицей песто, и она, опять же, была среднего качества.\"",
-    "category": "extract"
+    "category": "closed qa"
   },
   {
     "id": "f26aa279-de79-4578-83b7-1dfc1ea2968c",
@@ -1395,7 +1395,7 @@
     "id": "a58bfb9a-4f0d-4330-8154-4afd17d573c6",
     "source": "alpaca",
     "instruction": "Отнеси данное изделие к одному из следующих отделов: Электроника, Компьютеры, Умный дом или Искусство и ремесла.\n\n\"Google Nest Learning Thermostat\"",
-    "category": "extract"
+    "category": "qa"
   },
   {
     "id": "f7e51a69-cfa8-48a7-8222-9b117be405ee",
@@ -1425,7 +1425,7 @@
     "id": "9273726c-aaea-42ef-b5e1-83e0e0dd4922",
     "source": "alpaca",
     "instruction": "Реши, к какой части речи относится подчеркнутое слово.\n\n\"школа будет _оставаться через зиму\"",
-    "category": "grammar"
+    "category": null
   },
   {
     "id": "724424b6-dc4a-455c-979b-2bc4391caf14",
@@ -1461,7 +1461,7 @@
     "id": "9870d86b-6424-48bc-ae56-d23860c5f1d4",
     "source": "alpaca",
     "instruction": "Объясни значение данной фразы простыми словами. Если возможно, приведи пример.\n\n\"With a little give in them\"",
-    "category": "qa"
+    "category": "explain"
   },
   {
     "id": "20496e66-cfbe-4237-b2f0-0f5e93e5588a",
