@@ -1467,31 +1467,31 @@
     "id": "20496e66-cfbe-4237-b2f0-0f5e93e5588a",
     "source": "arena",
     "instruction": "Каково расстояние в километрах между Сиднеем и Лагосом?",
-    "category": null
+    "category": "qa"
   },
   {
     "id": "d1b015f0-70a7-49b6-81a9-276fa599d18c",
     "source": "arena",
     "instruction": "Как называется стиль изображения, в котором на сцене присутствует много элементов, объектов или людей?",
-    "category": "qa"
+    "category": "bad instruction"
   },
   {
     "id": "5a6bcaf7-2347-46e9-ab03-04c050dcc18e",
     "source": "arena",
     "instruction": "Какая самая лучшая техника у Рок Ли из Наруто Шиппуден, опиши ее.",
-    "category": null
+    "category": "qa"
   },
   {
     "id": "14d78477-cca5-4ff6-9a66-8265127a7edf",
     "source": "arena",
     "instruction": "В кроссворде подсказка звучит как \"домашнее животное, которое мурлыкает\". Оно должно состоять из пяти букв и заканчиваться на 'И'. Каким может быть ответ?",
-    "category": null
+    "category": "qa"
   },
   {
     "id": "9d3d740c-604f-4636-9392-1b86ac98417b",
     "source": "arena",
     "instruction": "Что это означает: \"Сервис собирает данные диалога пользователей и оставляет за собой право распространять их по лицензии Creative Commons Attribution (CC-BY).\"",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "cb8542bb-4a2b-4ecc-b19e-382b694c5d95",
@@ -1503,7 +1503,7 @@
     "id": "011a2773-54fc-4411-9ae1-be4a68f8fe6f",
     "source": "arena",
     "instruction": "Как бы Йода объявил о победе открытого исходного кода над крупными компаниями?",
-    "category": null
+    "category": "roleplay"
   },
   {
     "id": "f13a5c1c-0b66-4311-b9df-70ed4c0bdbf5",
@@ -1515,13 +1515,13 @@
     "id": "3811984a-7ee2-458f-8717-3950219b6971",
     "source": "arena",
     "instruction": "Напиши стихотворение с множеством рифм о видеоигре Сома",
-    "category": null
+    "category": "poem"
   },
   {
     "id": "77e89df8-6340-431b-8468-c0735b850209",
     "source": "arena",
     "instruction": "Из какой страны Nyrst band?",
-    "category": null
+    "category": "qa"
   },
   {
     "id": "b9f30ed4-c72d-4475-a9a8-ff0a3738ea09",
@@ -1533,13 +1533,13 @@
     "id": "c52b1ad0-3315-4159-971b-5f045c662810",
     "source": "arena",
     "instruction": "Как работает нейронная сеть с диффузией?",
-    "category": "explain"
+    "category": "bad instruction"
   },
   {
     "id": "9e430ca1-46dc-49d1-a065-dc362459c4a3",
     "source": "arena",
     "instruction": "Расскажи шутку, пожалуйста.",
-    "category": "writing"
+    "category": "joke"
   },
   {
     "id": "5d17ae75-363e-4e13-b745-29eeba89461c",
@@ -1563,13 +1563,13 @@
     "id": "dbf4f8b0-e302-48a5-a508-22b2b48e51ce",
     "source": "arena",
     "instruction": "Используя PyTorch, сгенерируйте блок кода для классификации текста.",
-    "category": "coding"
+    "category": "bad instruction"
   },
   {
     "id": "5e78191b-9d50-4d7a-a3b5-8577f7729a20",
     "source": "arena",
     "instruction": "Какие наиболее известные, но все еще нерешенные математические проблемы?",
-    "category": null
+    "category": "enumerate"
   },
   {
     "id": "94f28cb7-aa40-4375-a52d-2e374b4cebff",
@@ -1593,7 +1593,7 @@
     "id": "dad4e58f-201d-463d-b10b-410a571ee5f9",
     "source": "arena",
     "instruction": "Как код шейдера компилируется в инструкции для GPU?",
-    "category": "coding"
+    "category": "bad instruction"
   },
   {
     "id": "6f67819b-5b8e-4576-ba69-c9e65717291c",
@@ -1605,55 +1605,55 @@
     "id": "5a673fc9-1d40-4bd4-bfb5-48b21b2ce575",
     "source": "arena",
     "instruction": "Ответь на вопрос, однако также имитируй внутренний диалог, как это делают люди. Предварительно репетируй ответ внутренним диалогом перед своим ответом.\n\nСледуй следующему формату:\nВнутренний диалог: ...\nОтвет после первой попытки: ...\nВнутренний диалог: ...\nОтвет после второй попытки: ...\nВнутренний диалог: ...\nИтоговый ответ: ...\n\nВопрос: 1111*1111=",
-    "category": "math"
+    "category": "bad instruction"
   },
   {
     "id": "5dca8b69-3578-43b0-b590-09df5a289751",
     "source": "arena",
     "instruction": "Какие наиболее важные характеристики компании для максимизации доходности при выборе акций для долгосрочных инвестиций?",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "627bb903-0771-4d24-9213-53f2dc214f92",
     "source": "arena",
     "instruction": "Каково назначение процесса Бремсштралинг",
-    "category": null
+    "category": "explain"
   },
   {
     "id": "b6d02c9c-dadd-4802-bd9c-a3570cc7e194",
     "source": "arena",
     "instruction": "Время\n1900\n2000\n2100\n2200\n2300\n0000\n0100\nИконка\nПеременная облачность и перистые облака\nСильная облачность и несколько перистых облаков\nПасмурно\nПасмурно\nПасмурно\nПасмурно\nПасмурно\n(°C)\n20°\n19°\n17°\n16°\n15°\n14°\n14°\n(°C)\n15°\n14°\n13°\n11°\n10°\n10°\n9°\nВЕСТ\nВЕСТ\nВЕСТ\nВЕСТ\nВЕСТ\nВЕСТ\nВЕСТ\n(км/ч)\n20-30\n18-27\n16-26\n17-22\n17-28\n16-30\n17-32\n(мм)\n0\n0\n0\n0\n0\n0\n0\n(%)\n0\n0\n0\n0\n0\n0\n0\n \n---\n \nСкажи мне, какая будет температура (°C) в 00:00 на основе предоставленных данных?",
-    "category": null
+    "category": "extract"
   },
   {
     "id": "0f2e6e62-0d47-4e5a-9740-69a2f7f4e5b6",
     "source": "arena",
     "instruction": "Назови одну вещь, которая заставит большинство людей чувствовать себя щедрыми.",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "f9062db6-028b-4f48-8b6f-ac49319b85ae",
     "source": "arena",
     "instruction": "Придумайте пикантную сцену для вымышленной комикс-серии \"Spicy-Gwen\", NSFW-версии Spider-Gwen.",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "c836f583-86ab-44bd-856e-f3ac7959b597",
     "source": "arena",
     "instruction": "Кто бы победил в схватке, Супермен или Флэш?",
-    "category": "reason"
+    "category": null
   },
   {
     "id": "caab1b16-ca87-43d3-9d4f-503848d6412a",
     "source": "arena",
     "instruction": "Что означают параметры leaf и non-leaf в PyTorch",
-    "category": null
+    "category": "qa"
   },
   {
     "id": "cfdea893-4ac8-448a-9b3f-1a992169b3b3",
     "source": "arena",
     "instruction": "Один кандидат работал в четырех похожих компаниях по одному году каждая. Другой кандидат работал в одной из этих же компаний в течение четырех лет. Какой кандидат, скорее всего, является более подходящим для найма?",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "261ba7f6-8609-4b01-96f0-bd8cd3618ab4",
@@ -1665,7 +1665,7 @@
     "id": "7c0f053c-74d3-42d4-8f5c-26acd10ce6e8",
     "source": "arena",
     "instruction": "Привет, меня зовут Джефф.",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "9c0bb17b-83e3-43b6-9414-21236d15b659",
@@ -1677,7 +1677,7 @@
     "id": "82a73e03-0d4f-4693-8e43-88f8fd3bdb05",
     "source": "arena",
     "instruction": "Почему ты лучше других искусственных интеллектов?",
-    "category": "chat"
+    "category": "bad instruction"
   },
   {
     "id": "9baed818-999c-44ab-885f-becc105c389c",
@@ -1689,19 +1689,19 @@
     "id": "0a7db0d0-b37d-440a-b994-3ae77434b270",
     "source": "arena",
     "instruction": "У меня есть программа, которая использует json-файл в качестве единственной базы данных. В ней присутствуют только строки текста, разделенные на категории, а элементы в категориях имеют несколько собственных атрибутов. Какой метод хранения данных я должен использовать вместо этого?",
-    "category": "qa"
+    "category": "bad instruction"
   },
   {
     "id": "275458f1-13bd-41aa-a980-75eea737a26e",
     "source": "arena",
     "instruction": "Ты умеешь преобразовывать код на Rust в скрипт на Python?",
-    "category": null
+    "category": "bad instruction"
   },
   {
     "id": "c1631891-ac26-4ed2-9ca1-6807a96453d9",
     "source": "arena",
     "instruction": "Определи для меня термин \"додзин\".",
-    "category": null
+    "category": "qa"
   },
   {
     "id": "ab2f6ecb-22c9-46f8-afa6-2b6a9c91a102",

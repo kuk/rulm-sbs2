@@ -88,6 +88,17 @@ def gen_uid():
 
 ########
 #
+#   COSINE SIM
+#
+######
+
+
+def cosine_sim(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+########
+#
 #   DOTENV
 #
 #######
@@ -348,7 +359,7 @@ def sbs_swap_result(result):
 ####
 
 
-'''
+LABEL_TRANSLATE = '''
 <View>
   <View style="display: grid; grid-template: auto/1fr 1fr">
     <Header value="instruction" />
@@ -397,7 +408,7 @@ def label_translate_item(item):
 ###
 
 
-'''
+LABEL_CLASSIFY = '''
 <View>
   <View style="display: grid; grid-template: auto/1fr 1fr">
     <Header value="instruction" />
@@ -430,19 +441,35 @@ def label_translate_item(item):
       <Choice value="math" />
 
       <Choice value="bad instruction" />
-  </Choices>
+    </Choices>
+  </View>
+
+  <View>
+    <Text name="answers" value="$answers" />
   </View>
 </View>
 '''
 
 
-def classify_label_item(item):
-    return {
+def classify_label_item(item, model_answers):
+    models = sorted(model_answers, key=lambda _: len(model_answers[_]))
+    parts = []
+    for model in models:
+        answer = model_answers[model]
+        parts.append(f'''# {model}
+{answer}''')
+    answers = '\n\n'.join(parts)
+
+    label_item = {
         'data': {
             'id': item['id'],
             'instruction': item['instruction'],
-        },
-        'predictions': [{
+            'answers': answers,
+            'max_sim': item['max_sim'],
+        }
+    }
+    if item['category']:
+        label_item['predictions'] = [{
             'result': [{
                 'from_name': 'category',
                 'to_name': 'instruction',
@@ -452,7 +479,7 @@ def classify_label_item(item):
                 }
             }]
         }]
-    }
+    return label_item
 
 
 def label_classify_item(item):
@@ -474,7 +501,7 @@ def label_classify_item(item):
 ######
 
 
-'''
+LABEL_SBS = '''
 <View>
   <View>
     <Text name="instruction" value="$instruction" />
@@ -544,17 +571,6 @@ def label_sbs_item(item):
         'model_b': item['data']['model_b'],
         'result': result
     }
-
-
-########
-#
-#   COSINE SIM
-#
-######
-
-
-def cosine_sim(a, b):
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 
 ########
