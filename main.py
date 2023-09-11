@@ -417,6 +417,8 @@ LABEL_CLASSIFY = '''
     <Text name="instruction" value="$instruction" />
 
     <Choices name="category" toName="instruction" choice="single" showInline="true">
+      <Choice value="bad" />
+
       <Choice value="brainstorm" />
       <Choice value="reason" />
       <Choice value="qa" />
@@ -439,8 +441,6 @@ LABEL_CLASSIFY = '''
       <Choice value="chat" />
       <Choice value="extract" />
       <Choice value="math" />
-
-      <Choice value="bad instruction" />
     </Choices>
   </View>
 
