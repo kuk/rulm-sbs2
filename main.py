@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd
 
 from matplotlib import pyplot as plt
+import matplotlib.patches as mpatches
 
 import aiohttp
 
@@ -277,12 +278,7 @@ async def openai_translate(instruction):
 
 
 async def openai_sbs(instruction, answer_a, answer_b):
-    prompt = f'''Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. You should choose the assistant that follows the user's instructions and answers the user's question better. Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses. Begin your evaluation by comparing the two responses and provide a short explanation. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format:
-"[[A]]" if assistant A is better,
-"[[B]]" if assistant B is better,
-"[[AC]]" if assistant A is slightly better,
-"[[BC]]" if assistant B is slightly better,
-"[[C]]" for a tie.
+    prompt = f'''Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. You should choose the assistant that follows the user's instructions and answers the user's question better. Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses. Begin your evaluation by comparing the two responses and provide a short explanation. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output two values on a scale of 1 to 10 indicating the scores for Assistant A and B, respectively. Output your final verdict by strictly following this format: [[{{Assistant A score}} {{Assistant B score}}]].
 
 [User Question]
 {instruction}
@@ -306,39 +302,38 @@ def sbs_name_models(answer, model_a, model_b):
         elif value == 'B':
             return model_b
 
-    answer = re.sub(r'[A|a]ssistant (A|B)', repl1, answer)
-
-    def repl2(match):
-        value = match.group(1)
-        if value == 'C':
-            return '[[tie]]'
-
-        if value in ('A', 'AC'):
-            model = model_a
-        elif value in ('B', 'BC'):
-            model = model_b
-
-        modifier = 'better'
-        if value in ('AC', 'BC'):
-            modifier = 'slightly better'
-
-        return f'[[{model} {modifier}]]'
-
-    answer = re.sub(r'\[\[(A|B|AC|BC|C)\]\]', repl2, answer)
-    return answer
+    return re.sub(r'[A|a]ssistant (A|B)', repl1, answer)
 
 
-def sbs_answer_result(answer):
-    match = re.search(r'\[\[([ABC]{1,2})\]\]', answer)
+def sbs_answer_scores(answer):
+    a, b = None, None
+
+    match = re.search(r'\[\[(\d+)(\.\d+)?\s+(\d+)(\.\d+)?\]\]', answer)
     if match:
-        return match.group(1)
+        a, a_fraction, b, b_fraction = match.groups()
+        if a_fraction:
+            a = float(a + a_fraction)
+        else:
+            a = int(a)
+
+        if b_fraction:
+            b = float(b + b_fraction)
+        else:
+            b = int(b)
+
+    return a, b
 
 
-def sbs_swap_result(result):
-    if 'A' in result:
-        return result.replace('A', 'B')
-    elif 'B' in result:
-        return result.replace('B', 'A')
+def sbs_scores_result(score_a, score_b):
+    if score_a is None or score_b is None:
+        return
+    
+    if score_a > score_b:
+        return 'a'
+    elif score_a < score_b:
+        return 'b'
+    else:
+        return 'tie'
 
 
 ##########
@@ -518,11 +513,9 @@ LABEL_SBS_CONFIG = '''
 
   <View>
     <Choices name="result" toName="instruction" choice="single" showInline="true">
-      <Choice value="A"/>
-      <Choice value="AC"/> 
-      <Choice value="C"/>
-      <Choice value="BC"/>
-      <Choice value="B"/>
+      <Choice value="a"/>
+      <Choice value="b"/>
+      <Choice value="tie"/>
    </Choices>
 
    <Text name="answer" value="$answer" />
@@ -788,14 +781,15 @@ async def sbs_worker(items):
             print(repr(error), file=sys.stderr)
 
         else:
-            result = sbs_answer_result(answer)
-            if result:
-                if swap:
-                    result = sbs_swap_result(result)
+            score_a, score_b = sbs_answer_scores(answer)
+            if swap:
+                score_a, score_b = score_b, score_a
 
-                item['swap'] = swap
-                item['answer'] = answer
-                item['result'] = result
+            item['swap'] = swap
+            item['answer'] = answer
+            item['score_a'] = score_a
+            item['score_b'] = score_b
+            item['result'] = sbs_scores_result(score_a, score_b)
 
 
 async def openai_infer_worker(items, model, request_timeout=60):
