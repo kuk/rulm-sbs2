@@ -359,7 +359,7 @@ def sbs_swap_result(result):
 ####
 
 
-LABEL_TRANSLATE = '''
+LABEL_TRANSLATE_CONFIG = '''
 <View>
   <View style="display: grid; grid-template: auto/1fr 1fr">
     <Header value="instruction" />
@@ -408,7 +408,7 @@ def label_translate_item(item):
 ###
 
 
-LABEL_CLASSIFY = '''
+LABEL_CLASSIFY_CONFIG = '''
 <View>
   <View style="display: grid; grid-template: auto/1fr 1fr">
     <Header value="instruction" />
@@ -502,7 +502,7 @@ def label_classify_item(item):
 ######
 
 
-LABEL_SBS = '''
+LABEL_SBS_CONFIG = '''
 <View>
   <View>
     <Text name="instruction" value="$instruction" />
