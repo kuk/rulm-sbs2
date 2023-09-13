@@ -225,7 +225,7 @@ def parse_arena(records):
 
 async def openai_singleturn(
         prompt, model,
-        temperature=1,
+        temperature=0,
         max_tokens=None,
         request_timeout=60
 ):
