@@ -8,6 +8,7 @@ import asyncio
 import pickle
 import html
 import time
+import statistics
 from dataclasses import dataclass
 from contextlib import redirect_stdout
 from collections import (
@@ -302,7 +303,15 @@ def sbs_name_models(answer, model_a, model_b):
         elif value == 'B':
             return model_b
 
-    return re.sub(r'[A|a]ssistant (A|B)', repl1, answer)
+    answer = re.sub(r'[A|a]ssistants? (A and B)', f'{model_a} and {model_b}', answer)
+    answer = re.sub(r'[A|a]ssistant (A|B)', repl1, answer)
+
+    def repl2(match):
+        score_a, score_b = match.groups()
+        return f'[[{model_a} - {score_a}, {model_b} - {score_b}]]'
+
+    answer = re.sub(r'\[\[([\d\.]+)\s+([\d\.]+)\]\]', repl2, answer)
+    return answer
 
 
 def sbs_answer_scores(answer):
