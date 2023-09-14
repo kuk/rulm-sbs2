@@ -432,11 +432,17 @@ LABEL_CLASSIFY_CONFIG = '''
       <Choice value="writing" />
       <Choice value="roleplay" />
       <Choice value="joke" />
-      <Choice value="grammar" />
-      <Choice value="rewrite" />
       <Choice value="poem" />
-      <Choice value="outline" />
       <Choice value="cooking" />
+
+      <Choice value="outline" />
+      <Choice value="plan" />
+      <Choice value="invent" />
+      <Choice value="advice" />
+      <Choice value="instruction" />
+
+      <Choice value="grammar" />
+      <Choice value="translate" />
 
       <Choice value="coding" />
       <Choice value="summary" />
