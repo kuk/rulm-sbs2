@@ -614,7 +614,7 @@ def gigachat_client_init(headers, timeout=60):
     )
 
 
-async def gigachat_request(client, prompt, session_id, model_type='GigaChat:v1.13.0'):
+async def gigachat_request(client, prompt, session_id, model_type='GigaChat:v1.2.17.0'):
     response = await client.session.post(
         'https://developers.sber.ru/api/chatwm/api/client/request',
         json={
@@ -765,6 +765,7 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=0, 
 # gpt4_2 gpt-4-0613
 
 # gigachat v1.13.0
+# gigachat_2 v1.2.17.0
 
 # yagpt_instruct v1alpha/instruct model=general
 # yagpt_chat v1alpha/chat model=general
@@ -819,7 +820,7 @@ async def openai_infer_worker(items, model, request_timeout=60):
             print(repr(error), file=sys.stderr)
 
 
-async def gigachat_infer_worker(items, client):
+async def gigachat_infer_worker(client, items):
     for item in items:
         try:
             item['answer'] = await gigachat_singleturn(client, item['instruction'])
@@ -859,3 +860,25 @@ async def yagpt_infer_worker(client, limiter, items, mode='instruct'):
         except aiohttp.ClientError as error:
             print(repr(error), file=sys.stderr)
 
+
+#######
+#
+#  CENSOR
+#
+#####
+
+
+CENSOR_SUBSTRINGS = [
+    'Что-то в вашем вопросе меня смущает',
+    'Может, поговорим на другую тему?',
+    'я совсем не хочу говорить на эту тему',
+    'такие темы я не обсуждаю, чтобы никому не было обидно или неприятно',
+    'Не люблю менять тему разговора, но вот сейчас тот самый случай',
+    'говорить на эту тему я совсем не готова, чтобы никого не обидеть',
+]
+
+
+def is_censor(answer):
+    for substring in CENSOR_SUBSTRINGS:
+        if substring in answer:
+            return True
