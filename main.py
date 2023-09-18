@@ -774,6 +774,8 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=0, 
 # saiga2_7b
 # saiga2_13b
 
+# vicuna_13b lmsys/vicuna-13b-v1.5
+
 
 async def translate_worker(items):
     for item in items:
