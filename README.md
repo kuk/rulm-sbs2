@@ -2,7 +2,7 @@
 
 Бенчмарк сравнивает русские аналоги ChatGPT: Saiga, YandexGPT, Gigachat. Принцип работы бенчмарка похож на <a href="https://github.com/tatsu-lab/alpaca_eval">AlpacaEval</a> и <a href="https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard">MT-Bench</a>: бенчмарк собирает ответы моделей на <a href="data/tasks.md">500 заданий из 15+ категорий</a>, использует GPT4, чтобы сравнить качество ответов. <a href="#internal">Подробнее про внутреннее устройство бенчмарка</a>.
 
-> (!) На других заданиях могут быть другие результаты. Читать <a href="data/tasks.md">примеры заданий</a> и <a href="#qa_tasks">почему они именно такие</a>.
+> (!) На других заданиях могут быть другие результаты. Читать <a href="data/tasks.md">примеры заданий</a> и <a href="#tasks">почему они именно такие</a>.
 
 > (!) Ответы оценивает GPT4, а не живой человек, в ~15% случаев GPT4 ошибается. Читать <a href="data/sbs.md">примеры оценок GPT4</a> и <a href="#gpt_judge">почему выбрали GPT4 вместо Толоки<a>.
 
@@ -160,18 +160,11 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 - Для saiga2_* пока посчитали не все задания.
 <img width="751" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/f3875521-e5fb-43fb-ba49-d532727f82e0">
 
-Складывам дельты, делим на число заданий, для saiga2_7b, например, получается ~-2. Доверительный интервал [0.5, 0.95] считаем бутстрэпом, у saiga2_* меньше ответов, шире доверительные интревалы.
+Складывам дельты, делим на число заданий, для gigachat получаем ~-3.5. Доверительный интервал [0.5, 0.95] считаем бутстрэпом, у saiga2_* меньше ответов, шире доверительные интревалы.
 
 <img width="689" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/8f0b7e1b-f9ab-46dd-8bb4-95c6a7f586c1">
 
 <a href="data/tasks.md">Больше примеров заданий</a>, <a href="data/sbs.md">больше ответов моделей и оценок GPT4</a>.
-
-## Другие бенчмарки для русскоязычных LLM
-
-- <a href="https://russiansuperglue.com">russiansuperglue.com</a>
-- <a href="https://github.com/NLP-Core-Team/mmlu_ru">Перевод MMLU на русский</a>
-- <a href="http://tape-benchmark.com">tape-benchmark.com</a>
-- <a href="https://habr.com/ru/companies/sberdevices/articles/761120/">GigaChat против всех — тестируем языковую модель на генеративных задачах</a>
 
 <a name="gpt_judge"></a>
 ## GPT4 vs Толока
@@ -209,10 +202,8 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 </tr>
 </table>
 
-## Вопросы и ответы
-
-<a name="qa_tasks"></a>
-### Почему именно такие задания?
+<a name="tasks"></a>
+## Почему именно такие задания
 
 Для английского есть готовые открытые датасеты с заданиями:
 - <a href="https://github.com/yizhongw/self-instruct/blob/main/human_eval/user_oriented_instructions.jsonl">Alpaca</a> — 250 заданий, тестсет Alpaca.
@@ -227,17 +218,20 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 
 <a href="data/tasks.md">500 заданий из этого бенчмарка</a> = переведенные на русский Alpaca + Vicuna + часть Arena. 
 
-Alpaca и Vicuna — они у нас уже были переведенные на русский.
-
-Arena — в <a href="https://chat.lmsys.org">Chatbot Arena</a> живые люди придумывают вопросы, получают ответы двух моделей, выбирают ответ, который больше понравился. Авторы Chatbot Arena публикую собранные логи, такие задания отлично подходят для нашего бенчмарка.
-
-В ShareGPT попадают задания где ChatGPT хорошо сработала, сравниваться на них с ChatGPT нечестно. Плюс англоязычные модели типа Vicuna учились на ShareGPT.
+В ShareGPT попадают задания, где ChatGPT хорошо сработала, сравниваться на них с ChatGPT нечестно. Плюс англоязычные модели типа Vicuna учились на ShareGPT.
 
 Open Assistant — тоже риск, что задания есть в трейне англоязычных моделей.
 
 HH, Dolly — однообразные синтетические задания.
 
 Vicuna 2, Koala — может быть добавим в будущем.
+
+## Другие бенчмарки для русскоязычных LLM
+
+- <a href="https://russiansuperglue.com">russiansuperglue.com</a>
+- <a href="https://github.com/NLP-Core-Team/mmlu_ru">Перевод MMLU на русский</a>
+- <a href="http://tape-benchmark.com">tape-benchmark.com</a>
+- <a href="https://habr.com/ru/companies/sberdevices/articles/761120/">GigaChat против всех — тестируем языковую модель на генеративных задачах</a>
 
 ## Разработка
 
