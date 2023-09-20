@@ -1,36 +1,46 @@
 # rulm-sbs2
 
-Бенчмарк сравнивание русские аналоги ChatGPT: Saiga, YandexGPT, Gigachat. Принцип работы похож на <a href="https://github.com/tatsu-lab/alpaca_eval">AlpacaEval</a> и <a href="https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard">MT-Bench</a>: бенчмарк собирает ответы моделей на <a href="data/tasks.md">500 заданий из 15+ категорий</a>, использует GPT4, чтобы сравнить качество ответов. <a href="#internal">Подробнее про внутреннее устройство бенчмарка</a>.
+Бенчмарк сравнивает русские аналоги ChatGPT: Saiga, YandexGPT, Gigachat. Принцип работы бенчмарка похож на <a href="https://github.com/tatsu-lab/alpaca_eval">AlpacaEval</a> и <a href="https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard">MT-Bench</a>: бенчмарк собирает ответы моделей на <a href="data/tasks.md">500 заданий из 15+ категорий</a>, использует GPT4, чтобы сравнить качество ответов. <a href="#internal">Подробнее про внутреннее устройство бенчмарка</a>.
 
-> (!) На других заданиях могут быть другие результы. <a href="data/tasks.md">Читать задания</a>. <a href="#qa_tasks">Подробнее почему именно такие задания</a>.
+> (!) На других заданиях могут быть другие результы. Читать <a href="data/tasks.md">примеры заданий</a> и <a href="#qa_tasks">почему они именно такие</a>.
 
-> (!) Ответы оценивает GPT4, а не живой человек, в ~15% случаев GPT4 ошибается. <a href="data/sbs.md">Читать оценки GPT4</a>. <a href="#gpt_judge">Подробнее почему GPT4, а не Толока<a>.
+> (!) Ответы оценивает GPT4, а не живой человек, в ~15% случаев GPT4 ошибается. Читать <a href="data/sbs.md">примеры оценок GPT4</a> и <a href="#gpt_judge">почему выбрали GPT4 вместо Толоки<a>.
+
+<br/>
 
 - gpt4_2 — <a href="https://platform.openai.com/docs/models/gpt-4">gpt-4-0613</a>, turbo_2 — <a href="https://platform.openai.com/docs/models/gpt-3-5">gpt-3.5-turbo-0613</a>, saiga2_* — <a href="https://huggingface.co/collections/IlyaGusev/saiga2-lora-6505d4ccc3d1e53166b636cd">IlyaGusev/saiga2-lora</a>, vicuna_13b — <a href="https://huggingface.co/lmsys/vicuna-13b-v1.5">lmsys/vicuna-13b-v1.5</a>, yagpt_instruct — <a href="https://cloud.yandex.ru/docs/yandexgpt/api-ref/TextGeneration/instruct">Cloud YandexGPT API </a>, gigachat — неофициальное API v1.13.
 - Все модели сравниваем с turbo_2, поэтому точка turbo_2 в нуле. Подробнее как бенчмарк считает "Баллы B - баллы A" в <a href="#internal">разделе про внутреннее устройство</a>.
-- gigachat и yagpt_instruct на уровне saiga2_7b и saiga2_13b соответственно. <a href="https://ya.ru/gpt/2">YandexGPT2</a> пока нет в бенчмарке.
+- gpt4_2 чуть лучше turbo_2, задания недостаточно сложные, чтобы разделить эти модели.
+- gigachat и yagpt_instruct на уровне saiga2_7b и saiga2_13b соответственно. <a href="https://ya.ru/gpt/2">YandexGPT 2</a> пока нет в бенчмарке.
 - vicuna_13b на уровне saiga2_13b, хотя в обучении Vicuna не было акцента на русский.
-- gpt4_2 чуть лучше turbo_2, задания недостаточно сложные, чтобы разделить модели.
+- Топовые решения для русского — модель Openai. saiga2_70b приближается, но ее тяжело инференсить.
 <img width="689" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/8f0b7e1b-f9ab-46dd-8bb4-95c6a7f586c1">
 
+<br/>
+<br/>
+<br/>
 
-- <a href="data/tasks.md#writing">writing</a> — "напиши пост блог о ...", "напиши письмо начальнику"; <a href="data/tasks.md#brainstorm">brainstorm</a> — накидать идей "как ИИ мог бы быть полезен в медицине", "что если бы Эйнштейн занимался биологией"; <a href="data/tasks.md">примеры заданий по остальным категориям</a>.
+- <a href="data/tasks.md#writing">writing</a> — "напиши пост в блог о ...", "напиши письмо начальнику"; <a href="data/tasks.md#brainstorm">brainstorm</a> — накидать идей "как ИИ мог бы быть полезен в медицине", "что если бы Эйнштейн занимался биологией"; <a href="data/tasks.md">примеры заданий по остальным категориям</a>.
 - Все модели сравниваем с turbo_2, поэтому диаграмма turbo_2 проходит через 0.
-- gpt4_2 заметно лучше turbo_2 только на reason, задания типа "сколько снежинок выпадает за зиму", в остальных категориях задания не достаточно сложных чтобы разделить эти модели.
+- gpt4_2 заметно лучше turbo_2 только на <a href="data/tasks.md#reason">reason</a>, задания типа "сколько снежинок выпадает за зиму", в остальных категориях задания не достаточно сложных, чтобы разделить эти модели.
 - gigachat заметно хуже yagpt_instruct на math и coding.
-- У saiga2_13b похожая диаграма на yagpt_instruct. 
-<img width="873" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/91659e5f-b195-4041-ad3b-8fe1bc7e397d">
+- У saiga2_13b похожая диаграма на yagpt_instruct, получше только <a href="data/tasks.md#extract">extract</a> — задания типа "извлеки адрес недвижимости", "к какой категории относится письмо" "оформи в виде таблицы".
+<img width="686" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/78e9fe9d-62e6-43a7-9394-f41020f8bc03">
 
+<br/>
+<br/>
+<br/>
 
-- У saiga2_* и vicuna_13b похожие диаграмы по категориям, у всех базовая модель Llama 2.
-- Для saiga2_70b пока мало ответов, большая вариация.   
-<img width="841" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/65e8e382-f264-4855-bb85-ab8db6a5a331">
+- У saiga2_* и vicuna_13b похожие диаграмы по категориям, у всех базовая модель Llama 2. Базовая модель важнее, чем файнтюн на инструкциях.
+- Для saiga2_70b пока мало ответов, большая вариация. 
+<img width="669" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/d35f4e85-584b-487f-9d9a-58ca33b6402f">
+
 
 
 <a name="internal"></a>
 ## Принцип работы
 
-Рассмотрим одно из заданий, сравним ответы Turbo и Gigachat на него:
+Рассмотрим одно из заданий, сравним ответы turbo_2 и gigachat на него:
 <table>
 <tr><td colspan="2">
 #coding
@@ -115,7 +125,8 @@ print(result)  # Выведет &quot;ADH&quot;<br/>
 <tr>
 <table>
 
-Используем промпт из <a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-judge with MT-Bench and Chatbot Arena</a>, просим GPT4 сравнить ответы:<table>
+Используем чуть модифицированный промпт из <a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-judge with MT-Bench and Chatbot Arena</a>, просим GPT4 сравнить ответы:
+<table>
   <tr>
     <td>
 Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. You should choose the assistant that follows the user&#x27;s instructions and answers the user&#x27;s question better. Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses. Begin your evaluation by comparing the two responses and provide a short explanation. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output two values on a scale of 1 to 10 indicating the scores for Assistant A and B, respectively. Output your final verdict by strictly following this format: [[{Assistant A score} {Assistant B score}]].<br/>
@@ -142,10 +153,9 @@ Therefore, turbo_2&#x27;s response is more accurate, helpful, and detailed than 
 </td></tr>
 </table>
 
-GPT4 неправильно назвал проблему "gigachat seems to be comparing characters from the same string instead of comparing characters from the two different strings", Gigachat сравнивает символы из разных строк, но по неверным индексам "str1[j - 1] == str2[j]". GPT4 правильно заметил "function only returns the length of the longest common subsequence", действительно, по заданию нужно вернуть общую подпоследовательность, а не ее длину. Дельта между Turbo и Gigachat на этом задании 10 - 5 = 5 баллов.
+GPT4 неправильно назвал проблему "gigachat seems to be comparing characters from the same string instead of comparing characters from the two different strings", gigachat сравнивает символы из разных строк, но по неверным индексам "str1[j - 1] == str2[j]". GPT4 правильно заметил "function only returns the length of the longest common subsequence", действительно, по заданию нужно вернуть общую подпоследовательность, а не ее длину. Дельта между turbo_2 и gigachat на этом задании 10 - 5 = 5 баллов.
 
 Повторяем процедуру для всех заданий, для всех моделей:
-
 - Пример про общую подпоследовательность попадает в строку "gigachat", в оранжевый сектор "<= -3".
 - Для saiga2_* пока посчитали не все задания.
 <img width="751" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/f3875521-e5fb-43fb-ba49-d532727f82e0">
@@ -154,7 +164,7 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 
 <img width="689" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/8f0b7e1b-f9ab-46dd-8bb4-95c6a7f586c1">
 
-<a href="data/tasks.md">Больше примеров заданий</a>, больше ответов моделей и оценок GPT4 <a href="data/sbs.md">
+<a href="data/tasks.md">Больше примеров заданий</a>, <a href="data/sbs.md">больше ответов моделей и оценок GPT4</a>.
 
 ## Другие бенчмарки для русскоязычных LLM
 
@@ -166,19 +176,19 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 <a name="gpt_judge"></a>
 ## GPT4 vs Толока
 
-В проекте Saiga все модели оценивают толокеры, оценки собраны в <a href="https://huggingface.co/datasets/IlyaGusev/rulm_human_preferences">IlyaGusev/rulm_human_preferences</a>. Возьмем 100 случайных пар ответов из датасета, повторим оценку используя GPT4. 70 из 100 оценок совпадают, остальные 30 проверим вручную, 15 из 30 скорее правы толокеры, остальные 15 скорее права GPT4.
+В проекте Saiga все модели оценивают толокеры, оценки собраны в <a href="https://huggingface.co/datasets/IlyaGusev/rulm_human_preferences">IlyaGusev/rulm_human_preferences</a>. Возьмем 100 случайных пар ответов из датасета, повторим оценку используя GPT4. 70 из 100 оценок совпадают, остальные 30 проверим вручную, 15 из 30 — скорее правы толокеры, остальные 15 — скорее права GPT4.
 
-<table valign="top">
+<table>
 <tr>
     <td width="50%"><b>Толока</b></td>
     <td><b>GPT4</b></td>
 </tr>
 <tr>
-    <td>67$ за 1000 заданий с перекрытием 5</td>
+    <td>Цена — 67$ за 1000 заданий с перекрытием 5</td>
     <td>45$ за 1000 заданий</td>
 </tr>
 <tr>
-    <td>1 час модерация проекта + ~250 заданий в час</td>
+    <td>Скорость — 1 час модерация проекта + ~250 заданий в час</td>
     <td>~1 задание в секунду</td>
 </tr>
 <tr>
@@ -209,7 +219,7 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 - <a href="https://github.com/lm-sys/vicuna-blog-eval/blob/main/eval/table/question.jsonl">Vicuna</a> — 80 заданий, тестсет Vicuna.
 - <a href="https://huggingface.co/datasets/HuggingFaceH4/mt_bench_prompts">Vicuna 2</a> — новые 80 заданий из <a href="https://lmsys.org/blog/2023-06-22-leaderboard/">MT-Bench</a>.
 - <a href="https://huggingface.co/datasets/lmsys/chatbot_arena_conversations">Arena</a> — логи <a href="https://lmsys.org/blog/2023-05-03-arena/">Chatbot Arena</a>
-- <a href="https://huggingface.co/datasets/theblackcat102/sharegpt-english">ShareGPT</a> — дамп http://sharegpt.com.
+- <a href="https://huggingface.co/datasets/theblackcat102/sharegpt-english">ShareGPT</a> — дамп <a href="http://sharegpt.com">sharegpt.com</a>.
 - <a href="https://github.com/arnav-gudibande/koala-test-set/blob/main/koala_test_set.jsonl">Koala</a> — тестсет <a href="https://bair.berkeley.edu/blog/2023/04/03/koala/">Koala</a>.
 - <a href="https://huggingface.co/datasets/Anthropic/hh-rlhf">HH</a>
 - <a href="https://huggingface.co/datasets/OpenAssistant/oasst1">Open Assistant</a>
@@ -217,7 +227,7 @@ GPT4 неправильно назвал проблему "gigachat seems to be 
 
 <a href="data/tasks.md">500 заданий из этого бенчмарка</a> = переведенные на русский Alpaca + Vicuna + часть Arena. 
 
-Alpaca и Vicuna - они у нас уже были переведенные на русский.
+Alpaca и Vicuna — они у нас уже были переведенные на русский.
 
 Arena — в <a href="https://chat.lmsys.org">Chatbot Arena</a> живие люди придумывают вопросы, получают ответы двух моделей, выбирают ответ, который больше понравился. Авторы Chatbot Arena публикую собранные логи, такие задания отлично подходят для нашего бенчмарка.
 
