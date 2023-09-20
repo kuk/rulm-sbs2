@@ -244,30 +244,6 @@ async def openai_singleturn(
     return completion.choices[0].message.content
 
 
-async def openai_instruct(
-        prompt, model,
-        temperature=0,
-        max_tokens=None,
-        request_timeout=60
-):
-    completion = await openai.Completion.acreate(
-        model=model,
-        prompt=prompt,
-        temperature=temperature,
-        max_tokens=max_tokens,
-        request_timeout=request_timeout
-    )
-    return completion.choices[0].text
-
-
-def openai_embed_batch(texts, model='text-embedding-ada-002'):
-    results = openai.Embedding.create(
-        input=texts,
-        model=model
-    )
-    return [_.embedding for _ in results.data]
-
-
 #######
 #
 #   OPENAI TRANSLATE
@@ -308,9 +284,7 @@ async def openai_sbs(instruction, answer_a, answer_b):
 {answer_b}
 [The End of Assistant B's Answer]
 '''
-    # return await openai_singleturn(prompt, model='gpt-4-0613')
-    return await openai_instruct(prompt, model='gpt-3.5-turbo-instruct', max_tokens=1024)
-    return await openai_singleturn(prompt, model='gpt-3.5-turbo-0301')
+    return await openai_singleturn(prompt, model='gpt-4-0613')
 
 
 def sbs_name_models(answer, model_a, model_b):
