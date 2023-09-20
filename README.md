@@ -126,7 +126,7 @@ print(result)  # Выведет &quot;ADH&quot;<br/>
 <tr>
 <table>
 
-Используем чуть модифицированный промпт из <a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-judge with MT-Bench and Chatbot Arena</a>, просим GPT4 сравнить ответы:
+Используем чуть модифицированный промпт из <a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-judge with MT-Bench and Chatbot Arena</a>, просим GPT4 сравнить ответы. GPT4 <a href="https://huggingface.co/blog/llm-leaderboard">больше нравится ответ, который идет первым</a>. Случайно меняем ответы места, чтобы не было перекоса. В ответе ниже "Assistant A" и "Assistant B" заменены на названия моделей:
 <table>
   <tr>
     <td>
