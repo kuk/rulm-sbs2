@@ -233,6 +233,7 @@ Vicuna 2, Koala — может быть добавим в будущем.
 - <a href="https://github.com/NLP-Core-Team/mmlu_ru">Перевод MMLU на русский</a>
 - <a href="http://tape-benchmark.com">tape-benchmark.com</a>
 - <a href="https://habr.com/ru/companies/sberdevices/articles/761120/">GigaChat против всех — тестируем языковую модель на генеративных задачах</a>
+- <a href="https://habr.com/ru/companies/ru_mts/articles/759210/">LLaMa vs GigaChat: может ли опенсорсная модель работать лучше LLM с 13 млрд параметрами?</a>
 
 ## Разработка
 
