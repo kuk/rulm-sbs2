@@ -760,6 +760,7 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=0, 
 # gigachat_2 v1.2.17.0
 
 # yagpt_instruct v1alpha/instruct model=general
+# yagpt2_instruct v1alpha/instruct model=general "потом еще добавим нейминнг на yagpt-2.0"
 # yagpt_chat v1alpha/chat model=general
 # yagpt_alisa ya.ru chat 2023-08
 
