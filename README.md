@@ -234,6 +234,7 @@ Vicuna 2, Koala — может быть добавим в будущем.
 - <a href="http://tape-benchmark.com">tape-benchmark.com</a>
 - <a href="https://habr.com/ru/companies/sberdevices/articles/761120/">GigaChat против всех — тестируем языковую модель на генеративных задачах</a>
 - <a href="https://habr.com/ru/companies/ru_mts/articles/759210/">LLaMa vs GigaChat: может ли опенсорсная модель работать лучше LLM с 13 млрд параметрами?</a>
+- <a href="https://habr.com/ru/companies/just_ai/articles/762174/">Как мы в Just AI создавали и тестировали собственную LLM JustGPT — третью большую языковую модель в России</a>
 
 ## Разработка
 
