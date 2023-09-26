@@ -8,7 +8,7 @@
 
 <br/>
 
-- gpt4_2 — <a href="https://platform.openai.com/docs/models/gpt-4">gpt-4-0613</a>, turbo_2 — <a href="https://platform.openai.com/docs/models/gpt-3-5">gpt-3.5-turbo-0613</a>, saiga2_* — <a href="https://huggingface.co/collections/IlyaGusev/saiga2-lora-6505d4ccc3d1e53166b636cd">IlyaGusev/saiga2-lora</a>, vicuna_13b — <a href="https://huggingface.co/lmsys/vicuna-13b-v1.5">lmsys/vicuna-13b-v1.5</a>, yagpt2_instruct_2 — <a href="https://cloud.yandex.ru/docs/yandexgpt/api-ref/TextGeneration/instruct">Cloud YandexGPT API</a>, gigachat — неофициальное API v1.13.
+- gpt4_2 — <a href="https://platform.openai.com/docs/models/gpt-4">gpt-4-0613</a>, turbo_2 — <a href="https://platform.openai.com/docs/models/gpt-3-5">gpt-3.5-turbo-0613</a>, saiga2_* — <a href="https://huggingface.co/collections/IlyaGusev/saiga2-lora-6505d4ccc3d1e53166b636cd">IlyaGusev/saiga2-lora</a>, vicuna_13b — <a href="https://huggingface.co/lmsys/vicuna-13b-v1.5">lmsys/vicuna-13b-v1.5</a>, yagpt2_instruct_2 — <a href="https://ya.ru/gpt/2">YandexGPT 2</a> через <a href="https://cloud.yandex.ru/docs/yandexgpt/api-ref/TextGeneration/instruct">Cloud API</a>, gigachat — неофициальное API v1.13.
 - Все модели сравниваем с turbo_2, поэтому точка turbo_2 в нуле. Подробнее как бенчмарк считает "Баллы B - баллы A" в <a href="#internal">разделе про внутреннее устройство</a>.
 - gpt4_2 чуть лучше turbo_2, задания недостаточно сложные, чтобы разделить эти модели.
 - gigachat на уровне saiga2_7b.
