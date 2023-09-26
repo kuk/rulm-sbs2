@@ -681,6 +681,10 @@ class YagptClient:
     folder_id: str
 
 
+class YagptError(Exception):
+    pass
+
+
 def yagpt_client_init(token, folder_id, timeout=60):
     return YagptClient(
         session=aiohttp.ClientSession(
@@ -693,6 +697,25 @@ def yagpt_client_init(token, folder_id, timeout=60):
         token=token,
         folder_id=folder_id
     )
+
+
+async def yagpt_tokenize(client, text, model='general'):
+    response = await client.session.post(
+        'https://llm.api.cloud.yandex.net/llm/v1alpha/tokenize',
+        json={
+            'model': model,
+            'text': text
+        }
+    )
+    if response.status != 200:
+        raise YagptError(await response.text())
+
+    # {'tokens': [{'id': '0', 'text': '<s>', 'special': True},
+    #  {'id': '838', 'text': '▁У', 'special': False},
+    #  {'id': '1375', 'text': '▁меня', 'special': False},
+
+    data = await response.json()
+    return [_['text'] for _ in data['tokens']]
 
 
 async def yagpt_instruct(client, instruction, model='general', temperature=0, max_tokens=2000):
@@ -709,14 +732,15 @@ async def yagpt_instruct(client, instruction, model='general', temperature=0, ma
             'requestText': None
         }
     )
-    response.raise_for_status()
-    data = await response.json()
+    if response.status != 200:
+        raise YagptError(await response.text())
 
     #   {'result': {'alternatives': [{'text': 'На самом ...енно в своей форме.',
     #   'score': -2.3407514095306396,
     #   'num_tokens': '38'}],
     # 'num_prompt_tokens': '12'}}
 
+    data = await response.json()
     return data['result']['alternatives'][0]['text']
 
 
@@ -734,13 +758,14 @@ async def yagpt_singleturn(client, instruction, model='general', temperature=0, 
             'instructionText': instruction,
         }
     )
-    response.raise_for_status()
-    data = await response.json()
+    if response.status != 200:
+        raise YagptError(await response.text())
 
     # {'result': {'message': {'role': 'Ассистент',
     #    'text': "Это высказывание о смертной казни ...к преступнику Жоржу Плотнику'у."},
     #   'num_tokens': '60'}}
 
+    data = await response.json()
     return data['result']['message']['text']
 
 
@@ -841,7 +866,7 @@ class Limiter:
         self.prev = time.monotonic()
 
 
-async def yagpt_infer_worker(client, limiter, items, mode='instruct'):
+async def yagpt_infer_worker(client, limiter, items, mode='instruct', model='general'):
     assert mode in ('chat', 'instruct'), mode
     func = yagpt_instruct
     if mode == 'chat':
@@ -851,8 +876,8 @@ async def yagpt_infer_worker(client, limiter, items, mode='instruct'):
         await limiter.sleep()
 
         try:
-            item['answer'] = await func(client, item['instruction'])
-        except aiohttp.ClientError as error:
+            item['answer'] = await func(client, item['instruction'], model=model)
+        except YagptError as error:
             print(repr(error), file=sys.stderr)
 
 
