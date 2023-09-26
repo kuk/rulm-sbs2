@@ -8,25 +8,25 @@
 
 <br/>
 
-- gpt4_2 — <a href="https://platform.openai.com/docs/models/gpt-4">gpt-4-0613</a>, turbo_2 — <a href="https://platform.openai.com/docs/models/gpt-3-5">gpt-3.5-turbo-0613</a>, saiga2_* — <a href="https://huggingface.co/collections/IlyaGusev/saiga2-lora-6505d4ccc3d1e53166b636cd">IlyaGusev/saiga2-lora</a>, vicuna_13b — <a href="https://huggingface.co/lmsys/vicuna-13b-v1.5">lmsys/vicuna-13b-v1.5</a>, yagpt2_instruct — <a href="https://cloud.yandex.ru/docs/yandexgpt/api-ref/TextGeneration/instruct">Cloud YandexGPT API</a>, gigachat — неофициальное API v1.13.
+- gpt4_2 — <a href="https://platform.openai.com/docs/models/gpt-4">gpt-4-0613</a>, turbo_2 — <a href="https://platform.openai.com/docs/models/gpt-3-5">gpt-3.5-turbo-0613</a>, saiga2_* — <a href="https://huggingface.co/collections/IlyaGusev/saiga2-lora-6505d4ccc3d1e53166b636cd">IlyaGusev/saiga2-lora</a>, vicuna_13b — <a href="https://huggingface.co/lmsys/vicuna-13b-v1.5">lmsys/vicuna-13b-v1.5</a>, yagpt2_instruct_2 — <a href="https://cloud.yandex.ru/docs/yandexgpt/api-ref/TextGeneration/instruct">Cloud YandexGPT API</a>, gigachat — неофициальное API v1.13.
 - Все модели сравниваем с turbo_2, поэтому точка turbo_2 в нуле. Подробнее как бенчмарк считает "Баллы B - баллы A" в <a href="#internal">разделе про внутреннее устройство</a>.
 - gpt4_2 чуть лучше turbo_2, задания недостаточно сложные, чтобы разделить эти модели.
-- gigachat и yagpt2_instruct на уровне saiga2_7b и saiga2_13b соответственно.
+- gigachat на уровне saiga2_7b.
+- yagpt2_instruct_2 между saiga2_13b и saiga2_70b.
 - vicuna_13b на уровне saiga2_13b, хотя в обучении Vicuna не было акцента на русский.
 - Топовые решения для русского — модель Openai. saiga2_70b приближается, но ее тяжело инференсить.
-<img width="684" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/eb03a2c8-36fc-4e02-bf8d-b0649ec949fb">
+<img width="697" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/56572fef-62a3-459f-9d3a-5feee6cbb3e7">
 
 <br/>
 <br/>
 <br/>
 
-Результаты gigachat, yagpt2_instruct и saiga2_13b по категориям:
+Результаты gigachat, yagpt2_instruct_2 и saiga2_13b по категориям:
 - <a href="data/tasks.md#writing">writing</a> — "напиши пост в блог о ...", "напиши письмо начальнику"; <a href="data/tasks.md#brainstorm">brainstorm</a> — накидать идей "как ИИ мог бы быть полезен в медицине", "что если бы Эйнштейн занимался биологией"; <a href="data/tasks.md">примеры заданий по остальным категориям</a>.
 - Все модели сравниваем с turbo_2, поэтому диаграмма turbo_2 проходит через 0.
 - gpt4_2 заметно лучше turbo_2 только на <a href="data/tasks.md#reason">reason</a>, задания типа "сколько снежинок выпадает за зиму", в остальных категориях задания не достаточно сложных, чтобы разделить эти модели.
-- gigachat заметно хуже yagpt2_instruct на math и coding.
-- У saiga2_13b похожая диаграмма на yagpt2_instruct, получше только <a href="data/tasks.md#extract">extract</a> — задания типа "извлеки адрес недвижимости", "к какой категории относится письмо", "оформи в виде таблицы".
-<img width="704" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/d40ef06e-d25f-4f49-886f-35ccc9774763">
+- gigachat заметно хуже yagpt2_instruct_2 на math, coding и qa.
+<img width="736" alt="image" src="https://github.com/kuk/rulm-sbs2/assets/153776/84b0ad87-0ea4-496b-8fea-9299a2aa2e14">
 
 <br/>
 <br/>
